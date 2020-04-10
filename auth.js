@@ -173,8 +173,12 @@ if (loginForm) {
       .catch(function(err){
           console.log(err)
       })
+      console.log(response)
       if(response.loginUser){
         window.location.hash = "#dashboard";
+    }
+    else if(response.message == 'Please verify your email first'){
+        alert('Please verify your email first')
     }
     else{
         alert('Invalid credantials')
