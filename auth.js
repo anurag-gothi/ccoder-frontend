@@ -8,7 +8,7 @@
 const markups = {
   login: `
   <div class="d-flex justify-content-center h-100 login">
-  <div class="card">
+  <div class="card custom-card1">
       <div class="card-header">
           <h3>Login</h3>
           <div class="d-flex justify-content-end social_icon">
@@ -49,7 +49,7 @@ const markups = {
 
   register: `
   <div class="d-flex justify-content-center h-100 register">
-		<div class="card">
+		<div class="card custom-card1">
 			<div class="card-header">
 				<h3>Register</h3>
 				<div class="d-flex justify-content-end social_icon">
@@ -97,7 +97,16 @@ const markups = {
 			</div>
 		</div>
 	</div>
-`
+`,
+dashboard:`<div class="dashboard">
+<div class="card w-50">
+<div class="card-body">
+<h5 class="card-title">Card title</h5>
+<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+<a href="#" class="btn btn-primary">Button</a>
+</div>
+</div>
+</div> `
 };
 
 const app = document.querySelector("#app");
