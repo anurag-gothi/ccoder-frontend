@@ -6,9 +6,9 @@
 // console.log(cookiename)
 
 const markups = {
-  login: `
+    login: `
   <div class="d-flex justify-content-center h-100 login">
-  <div class="card">
+  <div class="card custom-card1">
       <div class="card-header">
           <h3>Login</h3>
           <div class="d-flex justify-content-end social_icon">
@@ -47,9 +47,9 @@ const markups = {
 </div>
   `,
 
-  register: `
+    register: `
   <div class="d-flex justify-content-center h-100 register">
-		<div class="card">
+		<div class="card custom-card1">
 			<div class="card-header">
 				<h3>Register</h3>
 				<div class="d-flex justify-content-end social_icon">
@@ -98,103 +98,125 @@ const markups = {
 		</div>
 	</div>
 `,
- dashboard: `
- <div class="dashboard">
-<div class="card w-50">
-<div class="card-body">
-<h5 class="card-title">Card title</h5>
-<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-<a href="#" class="btn btn-primary">Button</a>
+    dashboard: `
+<div class="row mt-2">
+<div class="col-lg-12" style= "height: 100px; background-color: white">
+<h1><strong>Dashboard</strong></h1> 
 </div>
 </div>
-</div> 
- `
+<div class="row mt-5">
+<div class="col-lg-12 mt-5" style= "height: 50px; background-color: white">
+<h5><strong>Your skills</strong></h5> 
+</div>
+</div>
+<div class="row mt-5">
+<div class="col-sm-6 ">
+  <div class="card">
+    <div class="card-body">
+    <small>INTERVIEW PREPARATION</small>
+      <h2 class="card-title"><strong>Interview Preparation Kit</strong></h2>
+      <p class="card-text">Available in Future.</p>
+      <a href="#" class="btn btn-warning disabled">Start Practice</a>
+    </div>
+  </div>
+</div>
+<div class="col-sm-6 ">
+  <div class="card">
+    <div class="card-body">
+    <small>PROBLEM SOLVING</small>
+    <h2 class="card-title"><strong>Problem Solving</strong></h2>
+    <p class="card-text">Start Building your skills.</p>
+    <a href="#" class="btn btn-warning">Start Practice</a>
+    </div>
+  </div>
+</div>
+</div>`
 };
 
 const app = document.querySelector("#app");
 
 const loadMarkUpFromHash = hash => {
-  app.innerHTML = null;
-  app.insertAdjacentHTML("afterbegin", markups[hash]);
+    app.innerHTML = null;
+    app.insertAdjacentHTML("afterbegin", markups[hash]);
 };
 
 
 if (window.location.hash) {
-  loadMarkUpFromHash(window.location.hash.replace("#", ""));
+    loadMarkUpFromHash(window.location.hash.replace("#", ""));
 }
 
 window.addEventListener("hashchange", e => {
-  const currentHash = window.location.hash.replace("#", "");
-  loadMarkUpFromHash(currentHash);
+    const currentHash = window.location.hash.replace("#", "");
+    loadMarkUpFromHash(currentHash);
 });
 const registerForm = document.querySelector(".registerform");
 const loginForm = document.querySelector(".loginform");
 
 if (registerForm) {
-  registerForm.addEventListener("submit", async e => {
-    e.preventDefault();
-    console.log('working')
-    const { name,username,email, password} = e.target;
-    const send = {
-        name: name.value,
-        username:username.value,
-        email:email.value,
-        password:password.value
+    registerForm.addEventListener("submit", async e => {
+        e.preventDefault();
+        console.log('working')
+        const { name, username, email, password } = e.target;
+        const send = {
+            name: name.value,
+            username: username.value,
+            email: email.value,
+            password: password.value
         }
-    let response =  await fetch('http://ccoder.herokuapp.com/user/register',
-      {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json;charset=utf-8' },
-          body: JSON.stringify(send)
-      })
-      .then(function(data){
-        return data.json()
-      })
+        let response = await fetch('http://ccoder.herokuapp.com/user/register',
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json;charset=utf-8' },
+                body: JSON.stringify(send)
+            })
+            .then(function (data) {
+                return data.json()
+            })
 
-      .catch(function(err){
-          console.log(err)
-      })
-      if(response.createUser){
-          alert('Registered Successfully, You will recieve email to verify Your Account and login again')
-          window.location.hash = "#login";
-      }
-      else{
-          alert('Validation error')
-      }      
-  });
+            .catch(function (err) {
+                console.log(err)
+            })
+        if (response.createUser) {
+            alert('Registered Successfully, You will recieve email to verify Your Account and login again')
+            window.location.hash = "#login";
+        }
+        else {
+            alert('Validation error')
+        }
+    });
 }
 
 if (loginForm) {
-  loginForm.addEventListener("submit", async e => {
-    e.preventDefault();
-    const {email, password} = e.target;
-    const send = {
-        email:email.value,
-        password:password.value
+    loginForm.addEventListener("submit", async e => {
+        e.preventDefault();
+        const { email, password } = e.target;
+        const send = {
+            email: email.value,
+            password: password.value
         }
-    let response =  await fetch('http://ccoder.herokuapp.com/user/login',
-      {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json;charset=utf-8' },
-          body: JSON.stringify(send)
-      })
-      .then(function(data){
-        return data.json()
-      })
-      .catch(function(err){
-          console.log(err)
-      })
-      console.log(response)
-      if(response.loginUser){
-        window.location.hash = "#dashboard";
-    }
-    else if(response.message == 'Please verify your email first'){
-        alert('Please verify your email first')
-    }
-    else{
-        alert('Invalid credantials')
-    }    
-});
+        let response = await fetch('http://ccoder.herokuapp.com/user/login',
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json;charset=utf-8' },
+                body: JSON.stringify(send)
+            })
+            .then(function (data) {
+                return data.json()
+            })
+            .catch(function (err) {
+                console.log(err)
+            })
+        console.log(response)
+        if (response.loginUser) {
+            window.location.hash = "#dashboard";
+        }
+        else if (response.message == 'Please verify your email first') {
+            alert('Please verify your email first')
+        }
+        else {
+            alert('Invalid credantials')
+        }
+    });
 }
 
 // if (googleLogin) {
