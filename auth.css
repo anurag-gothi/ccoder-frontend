@@ -8,13 +8,13 @@ font-family: 'Numans', sans-serif;
 }
 .register{
     background-image: url('./img/auth.svg');
-    background-size: 40%;
+    background-size: 30%;
     background-position: left;
     background-repeat: no-repeat;
 }
 .login{
     background-image: url('./img/auth.svg');
-    background-size: 40%;
+    background-size: 30%;
     background-position: left;
     background-repeat: no-repeat;
 }
@@ -25,7 +25,7 @@ align-content: center;
 }
 
 .card{
-height: 370px;
+height: 390px;
 margin-top: auto;
 margin-bottom: auto;
 width: 400px;
