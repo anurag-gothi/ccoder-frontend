@@ -106,8 +106,36 @@ dashboard:`<div class="dashboard">
 <a href="#" class="btn btn-primary">Button</a>
 </div>
 </div>
-</div> `
+</div> `,
+contest: function(name,Description,starttime){
+    return `<div class="card text-center">
+    <div class="card-body">
+      <h5 class="card-title">${name}</h5>
+      <p class="card-text">${Description}</p>
+      <a href="#" class="btn btn-warning">View Details</a>
+      <a href="#" class="btn btn-warning">Signup</a>
+    </div>
+    <div class="card-footer text-muted">
+        Start time:${starttime}
+    </div>
+    </div>`
+}
 };
+
+const contest =  () => {
+    return fetch('http://ccoder.herokuapp.com/dashboard/contests').then(function(data){
+        return data.json()
+    })
+    .then(function(res){
+        return res.contests
+    })
+    .then(function(resp){
+        return resp
+    })
+    .catch(function(err){
+        return err
+    })
+  };
 
 const app = document.querySelector("#app");
 
@@ -118,12 +146,41 @@ const loadMarkUpFromHash = hash => {
 
 
 if (window.location.hash) {
-  loadMarkUpFromHash(window.location.hash.replace("#", ""));
+    if(window.location.hash=='#contests'){
+        app.innerHTML=null;
+        contest().then(function(data){
+            
+            for(i=0;i<data.length;i++){
+                console.log(Date(data[i].startTime))
+            if(Date(data[i].startTime)<Date()){
+                continue
+            }
+                app.insertAdjacentHTML("beforeend",markups.contest(data[i].name,data[i].description,data[i].startTime))
+            }
+        })
+      }
+      else{
+        loadMarkUpFromHash(window.location.hash.replace("#", ""));
+    }
 }
 
 window.addEventListener("hashchange", e => {
   const currentHash = window.location.hash.replace("#", "");
-  loadMarkUpFromHash(currentHash);
+  if(window.location.hash=='#contests'){
+    app.innerHTML=null;
+    contest().then(function(data){
+        for(i=0;i<data.length;i++){
+            console.log(Date(data[i].startTime))
+            if(Date(data[i].startTime.toString())<Date()){
+                continue
+            }
+            app.insertAdjacentHTML("beforeend",markups.contest(data[i].name,data[i].description,data[i].startTime))
+        }
+    })
+  }
+  else{
+    loadMarkUpFromHash(currentHash);  
+  }
 });
 const registerForm = document.querySelector(".registerform");
 const loginForm = document.querySelector(".loginform");
@@ -194,6 +251,16 @@ if (loginForm) {
     }    
 });
 }
+
+
+
+
+// contest().then(function(data){
+//     console.log(data)
+//     for(i=0;i<data.length;i++){
+
+//     }
+// })
 
 // if (googleLogin) {
 //   googleLogin.addEventListener("click", async e => {
