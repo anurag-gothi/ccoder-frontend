@@ -13,18 +13,7 @@
 
 
 // const markups = {
-//     contest: function(name,Description,starttime){
-// `<div class="card text-center">
-// <div class="card-body">
-//   <h5 class="card-title">${name}</h5>
-//   <p class="card-text">${Description}</p>
-//   <a href="#" class="btn btn-warning">View Details</a>
-//   <a href="#" class="btn btn-warning">Signup</a>
-// </div>
-// <div class="card-footer text-muted">
-//     Start time:${starttime}
-// </div>
-// </div>`
+
 //     }
 //   };
   
