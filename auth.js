@@ -132,8 +132,8 @@ const markups = {
 </div>
 </div>`,
 
-contest: function(name,Description,starttime){
-    return `<div class="card text-center">
+    contest: function (name, Description, starttime) {
+        return `<div class="card text-center contest" style="margin-top:2%;">
     <div class="card-body">
       <h5 class="card-title">${name}</h5>
       <p class="card-text">${Description}</p>
@@ -144,23 +144,24 @@ contest: function(name,Description,starttime){
         Start time:${starttime}
     </div>
     </div>`
-}
+    }
 };
 
-const contest =  () => {
-    return fetch('http://ccoder.herokuapp.com/dashboard/contests').then(function(data){
+const contest = async (pageno = 1) => {
+    return await fetch(`http://ccoder.herokuapp.com/dashboard/contests?page=${pageno}`).then(function (data) {
         return data.json()
     })
-    .then(function(res){
-        return res.contests
-    })
-    .then(function(resp){
-        return resp
-    })
-    .catch(function(err){
-        return err
-    })
-  };
+        .then(function (res) {
+
+            return res
+        })
+        // .then(function(resp){
+        //     return resp
+        // })
+        .catch(function (err) {
+            return err
+        })
+};
 
 const app = document.querySelector("#app");
 
@@ -171,45 +172,72 @@ const loadMarkUpFromHash = hash => {
 
 
 if (window.location.hash) {
-    if(window.location.hash=='#contests'){
-        app.innerHTML=null;
-        contest().then(function(data){
-            
-            for(i=0;i<data.length;i++){
-                console.log(Date(data[i].startTime))
-            if(Date(data[i].startTime)<Date()){
-                continue
+    if (window.location.hash.includes('#contests')) {
+        var pageno=window.location.href.slice(window.location.href.indexOf('#contests') + 9);
+        if(!pageno){
+            pageno=1
+        }
+        app.innerHTML = null;
+        contest(pageno).then(function (data) {
+            length = data.totalContest
+            data = data.contests
+            noOfpage = Math.ceil(length / 10)
+            for (i = 0; i < data.length; i++) {
+                // console.log(Date(data[i].startTime))
+                if (Date(data[i].startTime.toString()) < Date()) {
+                    continue
+                }
+                app.insertAdjacentHTML("beforeend", markups.contest(data[i].name, data[i].description, data[i].startTime))
             }
-                app.insertAdjacentHTML("beforeend",markups.contest(data[i].name,data[i].description,data[i].startTime))
+            app.insertAdjacentHTML('beforeend', `<nav aria-label="Page navigation example" style="margin-top:2%;">
+        <ul class="pagination justify-content-center addcontestpage">
+        </ul>
+      </nav>`)
+            var page = document.querySelector('.addcontestpage')
+            for (i = 1; i <= noOfpage; i++) {
+                page.insertAdjacentHTML('beforeend', `<li class="page-item"><a class="page-link contestpage" href="#contests${i}">${i}</a></li>`)
             }
         })
-      }
-      else{
+    }
+    else {
         loadMarkUpFromHash(window.location.hash.replace("#", ""));
     }
 }
-
 window.addEventListener("hashchange", e => {
-  const currentHash = window.location.hash.replace("#", "");
-  if(window.location.hash=='#contests'){
-    app.innerHTML=null;
-    contest().then(function(data){
-        for(i=0;i<data.length;i++){
-            console.log(Date(data[i].startTime))
-            if(Date(data[i].startTime.toString())<Date()){
-                continue
-            }
-            app.insertAdjacentHTML("beforeend",markups.contest(data[i].name,data[i].description,data[i].startTime))
+    const currentHash = window.location.hash.replace("#", "");
+    if (window.location.hash.includes('#contests')) {
+        var pageno=window.location.href.slice(window.location.href.indexOf('#contests') + 9);
+        if(!pageno){
+            pageno=1
         }
-    })
-  }
-  else{
-    loadMarkUpFromHash(currentHash);  
-  }
+        app.innerHTML = null;
+        contest(pageno).then(function (data) {
+            length = data.totalContest
+            data = data.contests
+            noOfpage = Math.ceil(length / 10)
+            for (i = 0; i < data.length; i++) {
+                // console.log(Date(data[i].startTime))
+                if (Date(data[i].startTime.toString()) < Date()) {
+                    continue
+                }
+                app.insertAdjacentHTML("beforeend", markups.contest(data[i].name, data[i].description, data[i].startTime))
+            }
+            app.insertAdjacentHTML('beforeend', `<nav aria-label="Page navigation example" style="margin-top:2%;">
+        <ul class="pagination justify-content-center addcontestpage">
+        </ul>
+      </nav>`)
+            var page = document.querySelector('.addcontestpage')
+            for (i = 1; i <= noOfpage; i++) {
+                page.insertAdjacentHTML('beforeend', `<li class="page-item"><a class="page-link contestpage" href="#contests${i}">${i}</a></li>`)
+            }
+        })
+    }
+    else {
+        loadMarkUpFromHash(currentHash);
+    }
 });
 const registerForm = document.querySelector(".registerform");
 const loginForm = document.querySelector(".loginform");
-
 if (registerForm) {
     registerForm.addEventListener("submit", async e => {
         e.preventDefault();
