@@ -132,13 +132,13 @@ const markups = {
 </div>
 </div>`,
 
-    contest: function (name, Description, starttime) {
+    contest: function (name, Description, starttime,cond) {
         return `<div class="card text-center" style="margin-top:2%;">
     <div class="card-body">
       <h5 class="card-title">${name}</h5>
       <p class="card-text">${Description}</p>
       <a href="#viewcontest/${encodeURI(name)}" class="btn btn-warning viewcontest">View Details</a>
-      <a href="#signedcontest/${encodeURI(name)}" class="btn btn-warning signed">Signup</a>
+      <a href="#${cond}/${encodeURI(name)}" class="btn btn-warning signed">${cond}</a>
     </div>
     <div class="card-footer text-muted">
         Start time:${starttime}
@@ -151,7 +151,7 @@ practice: function(name,maxScore) {
     <div class="card-body">
       <h5 class="card-title"><strong>${name}</strong></h5>
       <p class="card-text" style="float:left">MaxScore: ${maxScore}</p>
-      <a href="#solvechallenge" class="btn btn-warning" style= "margin-left:900px;margin-top:-120px" >Solve Challenge</a>
+      <a href="#solvechallenge" class="btn btn-warning disab" style= "margin-left:900px;margin-top:-120px" >Solve Challenge</a>
     </div>
     </div>`
 },
@@ -172,6 +172,15 @@ viewcontest: function(contestname=1,description=1,rules=1,prize=1,organization=1
 
 
 var accessToken = localStorage.getItem('JWTToken')
+var id = localStorage.getItem('id')
+var username = localStorage.getItem('username')
+if(username){
+    a = document.querySelector('.username')
+    a.textContent=username
+    a.style.display='block'
+
+}
+
 const contest = async (pageno = 1) => {
     return await fetch(`http://ccoder.herokuapp.com/dashboard/contests/${accessToken}?page=${pageno}`).then(function (data) {
         return data.json()
@@ -201,7 +210,6 @@ const ViewContest = async (name) => {
         return data.json()
     })
         .then(function (res) {
-            console.log(res)
             return res.Contest
         })
         .catch(function (err) {
@@ -233,7 +241,13 @@ if (window.location.hash) {
             data = data.contests
             noOfpage = Math.ceil(length / 10)
             for (i = 0; i < data.length; i++) {
-                app.insertAdjacentHTML("beforeend", markups.contest(data[i].name, data[i].description, data[i].startTime))
+                if(data[i].signups.includes(id)){
+                    var cond = 'enter'
+                }
+                else{
+                    var cond = 'signup'
+                }
+                app.insertAdjacentHTML("beforeend", markups.contest(data[i].name, data[i].description, data[i].startTime,cond))
             }
             app.insertAdjacentHTML('beforeend', `<nav aria-label="Page navigation example" style="margin-top:2%;">
         <ul class="pagination justify-content-center addcontestpage">
@@ -270,15 +284,37 @@ if (window.location.hash) {
       }
       if(window.location.hash.includes('#viewcontest')){
 
-        var name=window.location.href.slice(window.location.href.indexOf('#viewcontest') + 13);
+        var name=window.location.hash.slice(window.location.hash.indexOf('#viewcontest') + 13);
         app.innerHTML=null
 
         ViewContest(name).then(function(data){
-            console.log(data)
             app.insertAdjacentHTML("beforeend",markups.viewcontest(data[0].name,data[0].description,data[0].rules,data[0].prize,data[0].organizationName,data[0].startTime))
         })
 
       }
+      if(window.location.hash.includes('#signup')){
+
+        var name=window.location.hash.slice(window.location.hash.indexOf('#singup') + 9);
+        console.log(name)
+        app.innerHTML=null
+
+        ViewContest(name).then(function(data){
+            app.insertAdjacentHTML("beforeend",markups.viewcontest(data[0].name,data[0].description,data[0].rules,data[0].prize,data[0].organizationName,data[0].startTime))
+            console.log(data[0].startTime)
+            for(i=0;i<data[0].challenges.length;i++){
+                app.insertAdjacentHTML("beforeend",markups.practice(data[0].challenges[i].name,data[0].challenges[i].maxScore))
+            }
+            if(new Date(data[0].startTime.slice(0,19))>new Date()){
+                console.log('yes')
+                document.querySelector('.disab').classList.add("disabled")
+            }
+            else if(new Date(data[0].startTime.slice(0,19))<new Date()){
+                console.log('no')
+                document.querySelector('.disab').classList.remove("disabled")
+            }
+
+        })
+    }
     else {
         loadMarkUpFromHash(window.location.hash.replace("#", ""));
     }
@@ -303,7 +339,13 @@ window.addEventListener("hashchange", e => {
             data = data.contests
             noOfpage = Math.ceil(length / 10)
             for (i = 0; i < data.length; i++) {
-                app.insertAdjacentHTML("beforeend", markups.contest(data[i].name, data[i].description, data[i].startTime))
+                if(data[i].signups.includes(id)){
+                    var cond = 'enter'
+                }
+                else{
+                    var cond = 'signup'
+                }
+                app.insertAdjacentHTML("beforeend", markups.contest(data[i].name, data[i].description, data[i].startTime,cond))
             }
             app.insertAdjacentHTML('beforeend', `<nav aria-label="Page navigation example" style="margin-top:2%;">
         <ul class="pagination justify-content-center addcontestpage">
@@ -339,13 +381,37 @@ window.addEventListener("hashchange", e => {
         })
       }
       if(window.location.hash.includes('#viewcontest')){
-        var name=window.location.href.slice(window.location.href.indexOf('#viewcontest') + 13);
+
+        var name=window.location.hash.slice(window.location.hash.indexOf('#viewcontest') + 13);
         app.innerHTML=null
+
         ViewContest(name).then(function(data){
-            console.log(data)
             app.insertAdjacentHTML("beforeend",markups.viewcontest(data[0].name,data[0].description,data[0].rules,data[0].prize,data[0].organizationName,data[0].startTime))
         })
+
       }
+      if(window.location.hash.includes('#signup')){
+
+        var name=window.location.hash.slice(window.location.hash.indexOf('#singup') + 9);
+        console.log(name)
+        app.innerHTML=null
+
+        ViewContest(name).then(function(data){
+            app.insertAdjacentHTML("beforeend",markups.viewcontest(data[0].name,data[0].description,data[0].rules,data[0].prize,data[0].organizationName,data[0].startTime))
+            console.log(data[0].startTime)
+            for(i=0;i<data[0].challenges.length;i++){
+                app.insertAdjacentHTML("beforeend",markups.practice(data[0].challenges[i].name,data[0].challenges[i].maxScore))
+            }
+            if(new Date(data[0].startTime.slice(0,19))>new Date()){
+                console.log('yes')
+                document.querySelector('.disab').classList.add("disabled")
+            }
+            else if(new Date(data[0].startTime.slice(0,19))<new Date()){
+                console.log('no')
+                document.querySelector('.disab').classList.remove("disabled")
+            }
+        })
+    }
     else {
         loadMarkUpFromHash(currentHash);
     }
@@ -406,8 +472,11 @@ if (loginForm) {
             })
             .then(function(user){
                 console.log(user)
+                
                 if(user.message!='Please verify your email first'){
                     localStorage.setItem('JWTToken', user.accessToken)
+                    localStorage.setItem('id',user.loginUser._id)
+                    localStorage.setItem('username',user.loginUser.username)
                 }
                 return user
                 //console.log(localStorage.getItem('JWTToken'));
