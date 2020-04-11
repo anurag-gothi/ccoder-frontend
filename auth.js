@@ -126,7 +126,7 @@ const markups = {
     <small>PROBLEM SOLVING</small>
     <h2 class="card-title"><strong>Problem Solving</strong></h2>
     <p class="card-text">Start Building your skills.</p>
-    <a href="#" class="btn btn-warning">Start Practice</a>
+    <a href="#practice" class="btn btn-warning">Start Practice</a>
     </div>
   </div>
 </div>
@@ -144,7 +144,34 @@ contest: function(name,Description,starttime){
         Start time:${starttime}
     </div>
     </div>`
-}
+},
+
+practice: function(name,maxScore) {
+    return `<div class="card mt-3">
+    <div class="card-body">
+      <h5 class="card-title"><strong>${name}</strong></h5>
+      <p class="card-text" style="float:left">MaxScore: ${maxScore}</p>
+      <a href="#" class="btn btn-warning" style= "margin-left:900px;margin-top:-120px" >Solve Challenge</a>
+    </div>
+    </div>`
+    
+},
+
+// pagination: `
+// <nav aria-label="Page navigation example" class="mt-3">
+//   <ul class="pagination justify-content-center">
+//     <li class="page-item disabled">
+//       <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+//     </li>
+//     <li class="page-item"><a class="page-link" href="#">1</a></li>
+//     <li class="page-item"><a class="page-link" href="#">2</a></li>
+//     <li class="page-item"><a class="page-link" href="#">3</a></li>
+//     <li class="page-item">
+//       <a class="page-link" href="#">Next</a>
+//     </li>
+//   </ul>
+// </nav>
+// `
 };
 
 const contest =  () => {
@@ -161,6 +188,21 @@ const contest =  () => {
         return err
     })
   };
+
+const practice = () => {
+    return fetch(`http://ccoder.herokuapp.com/dashboard/challenges?page=${2}`).then(function(data){
+        return data.json();
+    })
+    .then(function(res) {
+        return res.Challenges
+    })
+    .then(function(resp){
+        return resp
+    })
+    .catch(function(err){
+        return err
+    })
+}
 
 const app = document.querySelector("#app");
 
@@ -207,6 +249,41 @@ window.addEventListener("hashchange", e => {
     loadMarkUpFromHash(currentHash);  
   }
 });
+
+if (window.location.hash) {
+    if(window.location.hash=='#practice'){
+        app.innerHTML=null;
+        practice().then(function(data){
+            
+            for(i=0;i<data.length;i++){
+                app.insertAdjacentHTML("beforeend",markups.practice(data[i].name,data[i].maxScore))
+            }
+            app.insertAdjacentHTML("beforeend", markups.pagination)
+        })
+      }
+      else{
+        loadMarkUpFromHash(window.location.hash.replace("#", ""));
+    }
+}
+
+window.addEventListener("hashchange", e => {
+  const currentHash = window.location.hash.replace("#", "");
+  if(window.location.hash=='#practice'){
+    app.innerHTML=null;
+    practice().then(function(data){
+        for(i=0;i<data.length;i++){
+            app.insertAdjacentHTML("beforeend",markups.practice(data[i].name,data[i].maxScore))
+        }
+        app.insertAdjacentHTML("beforeend", markups.pagination)
+    })
+  }
+  else{
+    loadMarkUpFromHash(currentHash);  
+  }
+});
+
+
+
 const registerForm = document.querySelector(".registerform");
 const loginForm = document.querySelector(".loginform");
 
