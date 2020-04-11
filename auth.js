@@ -145,10 +145,150 @@ Practice: function(name,maxScore) {
     <div class="card-body">
       <h5 class="card-title"><strong>${name}</strong></h5>
       <p class="card-text" style="float:left">MaxScore: ${maxScore}</p>
-      <a href="#solvechallenge" class="btn btn-warning disab" style= "margin-left:900px;margin-top:-120px" >Solve Challenge</a>
+      <a href="#solvechallenge/${encodeURI(name)}" class="btn btn-warning disab" style= "margin-left:900px;margin-top:-120px" >Solve Challenge</a>
     </div>
     </div>`
 },
+
+solvechallenge: function(name,question,constraints,input,output) {
+    return `<h1>${name}</h1>
+    <div class="card text-center">
+    <div class="card-header">
+      <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Problem</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#submissions/${encodeURI(name)}">Submissions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#leaderboard/${encodeURI(name)}">Leaderboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#discussions/${encodeURI(name)}">Discussions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#editorial/${encodeURI(name)}">Editorial</a>
+        </li>
+      </ul>
+    </div>
+    <p>${question}</p>
+    <p><strong>constraints</strong></p>
+    <p>${constraints}</p>
+    <p><strong>Sample input</strong></p>
+    <p>${input}</p>
+    <p><strong>Sample output</strong></p>
+    <p>${output}</p>
+  </div>`
+},
+
+Submissions: function(submissions,name) {
+    return `<h1>${name}</h1>
+    <div class="card text-center">
+    <div class="card-header">
+      <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/${encodeURI(name)}">Problem</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Submissions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#leaderboard/${encodeURI(name)}">Leaderboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#discussions/${encodeURI(name)}">Discussions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#editorial/${encodeURI(name)}">Editorial</a>
+        </li>
+      </ul>
+    </div>
+    <p>${submissions}</p>
+  </div>`
+
+},
+
+Discussions: function(discussions,name){
+    return `<h1>${name}</h1>
+    <div class="card text-center">
+    <div class="card-header">
+      <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/${encodeURI(name)}">Problem</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#submissions/${encodeURI(name)}">Submissions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#leaderboard/${encodeURI(name)}">Leaderboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Discussions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#editorial/${encodeURI(name)}">Editorial</a>
+        </li>
+      </ul>
+    </div>
+    <p>${discussions}</p>
+  </div>`
+
+},
+
+Editorial: function(editorial,name){
+    return `<h1>${name}</h1>
+    <div class="card text-center">
+    <div class="card-header">
+      <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/${encodeURI(name)}">Problem</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#submissions/${encodeURI(name)}">Submissions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#leaderboard/${encodeURI(name)}">Leaderboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#discussions/${encodeURI(name)}">Discussions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Editorial</a>
+        </li>
+      </ul>
+    </div>
+    <p>${editorial}</p>
+  </div>`
+},
+
+Leaderboard: function(data, name) {
+    return `<h1>${name}</h1>
+    <div class="card text-center">
+    <div class="card-header">
+      <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/${encodeURI(name)}">Problem</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#submissions/${encodeURI(name)}">Submissions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Leaderboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#discussions/${encodeURI(name)}">Discussions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#editorial/${encodeURI(name)}">Editorial</a>
+        </li>
+      </ul>
+    </div>
+    <p>${data}</p>
+  </div>`
+},
+
+
 viewcontest: function(contestname=1,description=1,rules=1,prize=1,organization=1,startTime=1){
     return `<div class="jumbotron ">
     <h1 class="display-4">${contestname}</h1>
@@ -295,6 +435,29 @@ const practices = (pageno = 1) => {
         return err
     })
 }
+
+const solvechallenges = (name) => {
+    return fetch(`http://ccoder.herokuapp.com/dashboard/challenges/${name}/${accessToken}`).then(function(data){
+        return data.json()
+    }).then(function(res){
+        return res.Challenge
+    })
+    .catch(function(err){
+        return err
+    })
+}
+
+const leaderboard = (name) => {
+    return fetch(`http://ccoder.herokuapp.com/leaderboard/${name}/${accessToken}`).then(function(data){
+        return data.json()
+    }).then(function(res){
+        return res.sub
+    })
+    .catch(function(err){
+        return err
+    })
+}
+
 const ViewContest = async (name) => {
     return await fetch(`http://ccoder.herokuapp.com/dashboard/contests/${name}/${accessToken}`).then(function (data) {
         return data.json()
@@ -445,6 +608,7 @@ if (window.location.hash) {
 
         })
     }
+<<<<<<< HEAD
     if(window.location.hash=='#profile'){
         app.innerHTML=null
         Profile().then(function(data){
@@ -461,6 +625,64 @@ if (window.location.hash) {
         app.innerHTML=null
             app.insertAdjacentHTML("beforeend",markups.changepassword)
     }
+=======
+
+    if(window.location.hash.includes('#solvechallenge')){
+        var name = window.location.hash.slice(window.location.hash.indexOf('#solvechallenge')+16)
+        console.log(name)
+        app.innerHTML = null
+
+        solvechallenges(name).then(function(data){
+            app.insertAdjacentHTML("beforeend", markups.solvechallenge(data[0].name,data[0].question,data[0].constraints,data[0].input,data[0].output));
+        })
+
+    }
+
+    if(window.location.hash.includes('#solvechallenge/#submissions')){
+        var name = window.location.hash.slice(window.location.hash.indexOf('#solvechallenge/#submissions')+ 29)
+        console.log(name)
+        app.innerHTML = null
+
+        solvechallenges(name).then(function(data){
+            app.insertAdjacentHTML("beforeend", markups.Submissions(data[0].submissions, data[0].name))
+            console.log(data[0].name)
+        })
+    }
+
+    if(window.location.hash.includes('#solvechallenge/#discussions')){
+        var name = window.location.hash.slice(window.location.hash.indexOf('#solvechallenge/#discussions')+ 29)
+        console.log(name)
+        app.innerHTML = null
+
+        solvechallenges(name).then(function(data){
+            app.insertAdjacentHTML("beforeend", markups.Discussions(data[0].discussions, data[0].name))
+            console.log(data[0].name)
+        })
+    }
+
+    if(window.location.hash.includes('#solvechallenge/#editorial')){
+        var name = window.location.hash.slice(window.location.hash.indexOf('#solvechallenge/#editorial')+ 27)
+        console.log(name)
+        app.innerHTML = null
+
+        solvechallenges(name).then(function(data){
+            app.insertAdjacentHTML("beforeend", markups.Editorial(data[0].editorial, data[0].name))
+            console.log(data[0].name)
+        })
+    }
+
+    if(window.location.hash.includes('#solvechallenge/#leaderboard')){
+        var name = window.location.hash.slice(window.location.hash.indexOf('#solvechallenge/#leaderboard')+ 29)
+        console.log(name)
+        app.innerHTML = null
+
+        leaderboard(name).then(function(data){
+            app.insertAdjacentHTML("beforeend", markups.Leaderboard(data, decodeURI(name)))
+            console.log(data[0].name)
+        })
+    }
+
+>>>>>>> 86321ddee652d8ccde90b3fdc8cccc9fd07a8c9e
     else {
         loadMarkUpFromHash(window.location.hash.replace("#", ""));
     }
@@ -573,7 +795,7 @@ window.addEventListener("hashchange", e => {
             app.insertAdjacentHTML("beforeend",markups.viewcontest(data[0].name,data[0].description,data[0].rules,data[0].prize,data[0].organizationName,data[0].startTime))
             console.log(data[0].startTime)
             for(i=0;i<data[0].challenges.length;i++){
-                app.insertAdjacentHTML("beforeend",markups.practice(data[0].challenges[i].name,data[0].challenges[i].maxScore))
+                app.insertAdjacentHTML("beforeend",markups.Practice(data[0].challenges[i].name,data[0].challenges[i].maxScore))
             }
             if(new Date(data[0].startTime.slice(0,19))>new Date()){
                 console.log('yes')
@@ -599,10 +821,68 @@ window.addEventListener("hashchange", e => {
             app.insertAdjacentHTML("beforeend",markups.updateprofiles(data.name,data.username,data.email))
         })
     }
+<<<<<<< HEAD
     if(window.location.hash=='#changepassword'){
         app.innerHTML=null
         app.insertAdjacentHTML("beforeend",markups.changepassword)
     }
+=======
+
+    if(window.location.hash.includes('#solvechallenge')) {
+        var name = window.location.hash.slice(window.location.hash.indexOf('#solvechallenge')+16)
+        console.log(name)
+        app.innerHTML = null
+        solvechallenges(name).then(function(data){
+            app.insertAdjacentHTML("beforeend", markups.solvechallenge(data[0].name,data[0].question,data[0].constraints,data[0].input,data[0].output));
+        })
+
+    }
+
+    if(window.location.hash.includes('#solvechallenge/#submissions')){
+        var name = window.location.hash.slice(window.location.hash.indexOf('#solvechallenge/#submissions')+ 29)
+        console.log(name)
+        app.innerHTML = null
+
+        solvechallenges(name).then(function(data){
+            app.insertAdjacentHTML("beforeend", markups.Submissions(data[0].submissions, data[0].name))
+            console.log(data[0].name)
+        })
+    }
+
+    if(window.location.hash.includes('#solvechallenge/#discussions')){
+        var name = window.location.hash.slice(window.location.hash.indexOf('#solvechallenge/#discussions')+ 29)
+        console.log(name)
+        app.innerHTML = null
+
+        solvechallenges(name).then(function(data){
+            app.insertAdjacentHTML("beforeend", markups.Discussions(data[0].discussions, data[0].name))
+            console.log(data[0].name)
+        })
+    }
+
+    if(window.location.hash.includes('#solvechallenge/#editorial')){
+        var name = window.location.hash.slice(window.location.hash.indexOf('#solvechallenge/#editorial')+ 27)
+        console.log(name)
+        app.innerHTML = null
+
+        solvechallenges(name).then(function(data){
+            app.insertAdjacentHTML("beforeend", markups.Editorial(data[0].editorial, data[0].name))
+            console.log(data[0].name)
+        })
+    }
+
+    if(window.location.hash.includes('#solvechallenge/#leaderboard')){
+        var name = window.location.hash.slice(window.location.hash.indexOf('#solvechallenge/#leaderboard')+ 29)
+        console.log(name)
+        app.innerHTML = null
+
+        leaderboard(name).then(function(data){
+            app.insertAdjacentHTML("beforeend", markups.Leaderboard(data, decodeURI(name)))
+            console.log(data[0].name)
+        })
+    }
+
+>>>>>>> 86321ddee652d8ccde90b3fdc8cccc9fd07a8c9e
     else {
         loadMarkUpFromHash(currentHash);
     }
@@ -679,7 +959,6 @@ if (loginForm) {
             .catch(function (err) {
                 console.log(err)
             })
-
 
         if (response.message == 'Please verify your email first') {
             alert('Please verify your email first')
