@@ -1,9 +1,3 @@
-// const axios = require('axios')
-// import axios from "axios";
-
-// document.cookie = "username='John Doe';"
-// var cookiename = document.cookie;
-// console.log(cookiename)
 
 const markups = {
     login: `
@@ -146,7 +140,7 @@ const markups = {
     </div>`
 },
 
-practice: function(name,maxScore) {
+Practice: function(name,maxScore) {
     return `<div class="card mt-3">
     <div class="card-body">
       <h5 class="card-title"><strong>${name}</strong></h5>
@@ -167,8 +161,104 @@ viewcontest: function(contestname=1,description=1,rules=1,prize=1,organization=1
         Start time:${startTime}
     </div>
   </div>`
+},
+profiles: function(name,username,email,image='https://res.cloudinary.com/anuraggothi/image/upload/v1586613104/profile_i03ub1.svg'){
+    return ` <div class="card text-center">
+        <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+              <a class="nav-link active" href="#profile">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#updateprofile">Update</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#changepassword">Change Password</a>
+            </li>
+          </ul>
+        </div>        
+    <div class="custom-card2">
+    <img src='${image}' alt="No image" style="width:100%">
+    <h5>Name: ${name}</h5>
+    <p class="title">CCoder User </p>
+    <p>Username: ${username}</p>
+    <p>Email: ${email}</p>
+  </div>
+  </div>
+  `
+},
+updateprofiles: function(name,username,email,image='https://res.cloudinary.com/anuraggothi/image/upload/v1586613104/profile_i03ub1.svg'){
+    return `
+    <div class="card text-center">
+        <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+              <a class="nav-link" href="#profile">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#updateprofile">Update</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#changepassword">Change Password</a>
+            </li>
+          </ul>
+        </div>        
+    <div class="custom-card3">
+            <form class='update'>
+            <br>
+            Email↓↓
+            <input class="form-control" name="email" type="text" placeholder="email" value="${email}" readonly>
+            <br>
+            Name↓↓
+            <input class="form-control" name="name" type="text" value='${name}' placeholder="name" required>
+            <br>
+            Username↓↓
+            <input class="form-control" name ="username" type="text" value='${username}' placeholder="username" required>
+            <br>
+            <input type="submit" value="Update" class="btn login_btn">
+            <br>
+            <br>
+            </form>
+        </div>
+        </div>
+        `
+},
+changepassword: `
+        <div class="card text-center">
+        <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+              <a class="nav-link" href="#profile">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#updateprofile">Update</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#changepassword">Change Password</a>
+            </li>
+          </ul>
+        </div>        
+        <div class="custom-card3">
+        <br>
+        <form class='changepassword'>
+        Current Password↓↓
+        <input class="form-control" name="oldpassword" type="password" placeholder="current password">
+        <br>
+        New password↓↓
+        <input class="form-control" name="newpassword" type="text" placeholder="new password" required>
+        <br>
+        Confirm password↓↓
+        <input class="form-control" name ="confirmpassword" type="text"  placeholder="confirm password" required>
+        <br>
+        <input type="submit" value="Update Password" class="btn btn-warning">
+        <br>
+        <br>
+        </form>
+    </div>
+    </div>
+    `
 }
-}
+
 
 
 var accessToken = localStorage.getItem('JWTToken')
@@ -194,7 +284,7 @@ const contest = async (pageno = 1) => {
         })
 };
 
-const practice = (pageno = 1) => {
+const practices = (pageno = 1) => {
     return fetch(`http://ccoder.herokuapp.com/dashboard/challenges/${accessToken}?page=${pageno}`).then(function(data){
         return data.json();
     })
@@ -216,6 +306,17 @@ const ViewContest = async (name) => {
             return err
         })
 };
+const Profile = async()=>{
+    return await fetch(`http://ccoder.herokuapp.com/user/me/${accessToken}`).then(function(data){
+        return data.json()
+    })
+    .then(function(res){
+        return res
+    })
+    .catch(function(err){
+        return err
+    })
+} 
 
 const app = document.querySelector("#app");
 const loadMarkUpFromHash = hash => {
@@ -265,12 +366,12 @@ if (window.location.hash) {
             pageno=1
         }
         app.innerHTML=null;
-        practice(pageno).then(function(data){
+        practices(pageno).then(function(data){
             length = 50
             data = data
             noOfpage = Math.ceil(length / 10)
             for(i=0;i<data.length;i++){
-                app.insertAdjacentHTML("beforeend",markups.practice(data[i].name,data[i].maxScore))
+                app.insertAdjacentHTML("beforeend",markups.Practice(data[i].name,data[i].maxScore))
             }
             app.insertAdjacentHTML('beforeend', `<nav aria-label="Page navigation example" style="margin-top:2%;">
             <ul class="pagination justify-content-center addchallengepage">
@@ -296,13 +397,17 @@ if (window.location.hash) {
 
         var name=window.location.hash.slice(window.location.hash.indexOf('#singup') + 9);
         console.log(name)
+        let response =  fetch(`http://ccoder.herokuapp.com/contest/${name}/signup/${accessToken}`,
+        {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json;charset=utf-8' },
+        })
         app.innerHTML=null
-
         ViewContest(name).then(function(data){
             app.insertAdjacentHTML("beforeend",markups.viewcontest(data[0].name,data[0].description,data[0].rules,data[0].prize,data[0].organizationName,data[0].startTime))
             console.log(data[0].startTime)
             for(i=0;i<data[0].challenges.length;i++){
-                app.insertAdjacentHTML("beforeend",markups.practice(data[0].challenges[i].name,data[0].challenges[i].maxScore))
+                app.insertAdjacentHTML("beforeend",markups.Practice(data[0].challenges[i].name,data[0].challenges[i].maxScore))
             }
             if(new Date(data[0].startTime.slice(0,19))>new Date()){
                 console.log('yes')
@@ -314,6 +419,47 @@ if (window.location.hash) {
             }
 
         })
+        
+    }
+ 
+    if(window.location.hash.includes('#enter')){
+
+        var name=window.location.hash.slice(window.location.hash.indexOf('#enter') + 7);
+        console.log(name)
+        app.innerHTML=null
+
+        ViewContest(name).then(function(data){
+            app.insertAdjacentHTML("beforeend",markups.viewcontest(data[0].name,data[0].description,data[0].rules,data[0].prize,data[0].organizationName,data[0].startTime))
+            console.log(data[0].startTime)
+            for(i=0;i<data[0].challenges.length;i++){
+                app.insertAdjacentHTML("beforeend",markups.Practice(data[0].challenges[i].name,data[0].challenges[i].maxScore))
+            }
+            if(new Date(data[0].startTime.slice(0,19))>new Date()){
+                console.log('yes')
+                document.querySelector('.disab').classList.add("disabled")
+            }
+            else if(new Date(data[0].startTime.slice(0,19))<new Date()){
+                console.log('no')
+                document.querySelector('.disab').classList.remove("disabled")
+            }
+
+        })
+    }
+    if(window.location.hash=='#profile'){
+        app.innerHTML=null
+        Profile().then(function(data){
+            app.insertAdjacentHTML("beforeend",markups.profiles(data.name,data.username,data.email))
+        })
+    }
+    if(window.location.hash=='#updateprofile'){
+        app.innerHTML=null
+        Profile().then(function(data){
+            app.insertAdjacentHTML("beforeend",markups.updateprofiles(data.name,data.username,data.email))
+        })
+    }
+    if(window.location.hash=='#changepassword'){
+        app.innerHTML=null
+            app.insertAdjacentHTML("beforeend",markups.changepassword)
     }
     else {
         loadMarkUpFromHash(window.location.hash.replace("#", ""));
@@ -363,12 +509,12 @@ window.addEventListener("hashchange", e => {
             pageno=1
         }
         app.innerHTML=null;
-        practice(pageno).then(function(data){
+        practices(pageno).then(function(data){
             length = 50
             data = data
             noOfpage = Math.ceil(length / 10)
             for(i=0;i<data.length;i++){
-                app.insertAdjacentHTML("beforeend",markups.practice(data[i].name,data[i].maxScore))
+                app.insertAdjacentHTML("beforeend",markups.Practice(data[i].name,data[i].maxScore))
             }
             app.insertAdjacentHTML('beforeend', `<nav aria-label="Page navigation example" style="margin-top:2%;">
             <ul class="pagination justify-content-center addchallengepage">
@@ -394,6 +540,33 @@ window.addEventListener("hashchange", e => {
 
         var name=window.location.hash.slice(window.location.hash.indexOf('#singup') + 9);
         console.log(name)
+        let response =  fetch(`http://ccoder.herokuapp.com/contest/${name}/signup/${accessToken}`,
+        {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json;charset=utf-8' },
+        })
+        app.innerHTML=null
+
+        ViewContest(name).then(function(data){
+            app.insertAdjacentHTML("beforeend",markups.viewcontest(data[0].name,data[0].description,data[0].rules,data[0].prize,data[0].organizationName,data[0].startTime))
+            console.log(data[0].startTime)
+            for(i=0;i<data[0].challenges.length;i++){
+                app.insertAdjacentHTML("beforeend",markups.Practice(data[0].challenges[i].name,data[0].challenges[i].maxScore))
+            }
+            if(new Date(data[0].startTime.slice(0,19))>new Date()){
+                console.log('yes')
+                document.querySelector('.disab').classList.add("disabled")
+            }
+            else if(new Date(data[0].startTime.slice(0,19))<new Date()){
+                console.log('no')
+                document.querySelector('.disab').classList.remove("disabled")
+            }
+        })
+    }
+    if(window.location.hash.includes('#enter')){
+
+        var name=window.location.hash.slice(window.location.hash.indexOf('#enter') + 7);
+        console.log(name)
         app.innerHTML=null
 
         ViewContest(name).then(function(data){
@@ -410,7 +583,25 @@ window.addEventListener("hashchange", e => {
                 console.log('no')
                 document.querySelector('.disab').classList.remove("disabled")
             }
+
         })
+    }
+    
+    if(window.location.hash=='#profile'){
+        app.innerHTML=null
+        Profile().then(function(data){
+            app.insertAdjacentHTML("beforeend",markups.profiles(data.name,data.username,data.email))
+        })
+    }
+    if(window.location.hash=='#updateprofile'){
+        app.innerHTML=null
+        Profile().then(function(data){
+            app.insertAdjacentHTML("beforeend",markups.updateprofiles(data.name,data.username,data.email))
+        })
+    }
+    if(window.location.hash=='#changepassword'){
+        app.innerHTML=null
+        app.insertAdjacentHTML("beforeend",markups.changepassword)
     }
     else {
         loadMarkUpFromHash(currentHash);
@@ -419,6 +610,10 @@ window.addEventListener("hashchange", e => {
 
 const registerForm = document.querySelector(".registerform");
 const loginForm = document.querySelector(".loginform");
+const update = document.querySelector('.update')
+const changePassword = document.querySelector(".changepassword");
+
+
 if (registerForm) {
     registerForm.addEventListener("submit", async e => {
         e.preventDefault();
@@ -498,19 +693,38 @@ if (loginForm) {
     });
 }
 
+if(update){
+    console.log('working1')
+    update.addEventListener("submit", async e => {
+        e.preventDefault();
+        console.log('working')
+        const { name, username, email, password } = e.target;
+        const send = {
+            name: name.value,
+            username: username.value,
+            email: email.value
+            }
+        let response = await fetch(`http://ccoder.herokuapp.com/user/userprofile/${accessToken}`,
+            {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json;charset=utf-8' },
+                body: JSON.stringify(send)
+            })
+            .then(function (data) {
+                return data.json()
+            })
 
+            .catch(function (err) {
+                console.log(err)
+            })
 
-
-// contest().then(function(data){
-//     console.log(data)
-//     for(i=0;i<data.length;i++){
-
-//     }
-// })
-
-// if (googleLogin) {
-//   googleLogin.addEventListener("click", async e => {
-//     e.preventDefault();
-//     console.log("Clicking");
-//   });
-// }
+        console.log(response)
+        // if (response.createUser) {
+        //     alert('Registered Successfully, You will recieve email to verify Your Account and login again')
+        //     window.location.hash = "#login";
+        // }
+        // else {
+        //     alert('Validation error')
+        // }
+    });
+}

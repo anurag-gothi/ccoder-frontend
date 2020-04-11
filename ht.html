@@ -53,17 +53,68 @@
 		  </form>
 	  </nav>
 <div class="container" id="app">
-  
-      <div class="card mt-3">
-        <div class="card-body">
-          <h5 class="card-title"><strong>${name}</strong></h5>
-          <p class="card-text" style="float:left">MaxScore: ${maxScore}</p>
-          <a href="#solvechallenge" class="btn btn-warning disabled"  style= "margin-left:900px;margin-top:-120px" >Solve Challenge</a>
+    <div class="card text-center">
+        <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Update</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Change Password</a>
+            </li>
+          </ul>
         </div>
+
+
+        <div class="custom-card2">
+            <img src=`'${image}'` alt="No image" style="width:100%">
+            <h5>Name: ${name}</h5>
+            <p class="title">CCoder User </p>
+            <p>Username: ${username}</p>
+            <p>Email: ${email}</p>
+          </div>
+
+
+          <div class="custom-card3">
+            <form class='updateprofile'>
+            <img src=`'${image}'` alt="No image" style="width:100%">
+            <br>
+            Name↓↓
+            <input class="form-control" name="email" type="text" placeholder="email" value=`"${email}"` readonly>
+            <br>
+            Email↓↓
+            <input class="form-control" name="name" type="text" value=`'${name}'` placeholder="name" required>
+            <br>
+            Username↓↓
+            <input class="form-control" name ="username" type="text" value=`'${username}'` placeholder="username" required>
+            <br>
+            <input type="submit" value="Update" class="btn login_btn">
+            <br>
+            <br>
+            </form>
         </div>
-        
-        
-        
+
+        <div class="custom-card3">
+            <br>
+            <form class='changepassword'>
+            Current Password↓↓
+            <input class="form-control" name="oldpassword" type="password" placeholder="current password">
+            <br>
+            New password↓↓
+            <input class="form-control" name="newpassword" type="text" placeholder="new password" required>
+            <br>
+            Confirm password↓↓
+            <input class="form-control" name ="confirmpassword" type="text"  placeholder="confirm password" required>
+            <br>
+            <input type="submit" value="Update Password" class="btn btn-warning">
+            <br>
+            <br>
+            </form>
+        </div>
+      </div>
 </div>
 
 
