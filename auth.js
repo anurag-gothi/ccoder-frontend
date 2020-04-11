@@ -151,14 +151,19 @@ practice: function(name,maxScore) {
     <div class="card-body">
       <h5 class="card-title"><strong>${name}</strong></h5>
       <p class="card-text" style="float:left">MaxScore: ${maxScore}</p>
-      <a href="#solvechallenge" class="btn btn-warning" style= "margin-left:900px;margin-top:-120px" >Solve Challenge</a>
+      <a href="#solvechallenge" class="btn btn-warning" id="${name}" style= "margin-left:900px;margin-top:-120px" >Solve Challenge</a>
     </div>
     </div>`
     
 },
+
+solvechallenge: function(name) {
+    return `<h1>${name}</h1>`
+}
 }
 
 var accessToken = localStorage.getItem('JWTToken')
+
 const contest = async (pageno = 1) => {
     return await fetch(`http://ccoder.herokuapp.com/dashboard/contests/?page=${pageno}`).then(function (data) {
         return data.json()
@@ -184,9 +189,16 @@ const practice = (pageno = 1) => {
     })
 }
 
-// const solvechallenge = () => {
-//     return fetch(`http://ccoder.herokuapp.com/dashboard/challenges/${}/${accessToken}`)
-// }
+const solvechallenge = (challengeName) => {
+    return fetch(`http://ccoder.herokuapp.com/dashboard/challenges/${challengeName}/${accessToken}`).then(function(data){
+        return data.json()
+    }).then(function(res){
+        return res
+    })
+    .catch(function(err){
+        return err
+    })
+}
 
 
 const app = document.querySelector("#app");
@@ -322,6 +334,36 @@ window.addEventListener("hashchange", e => {
   }
 });
 
+if(window.localStorage.hash) {
+    if(window.location.hash = '#solvechallenge') {
+        solvechallenge(challenegeName).then(function(data){
+            app.insertAdjacentHTML('beforeend', markups.solvechallenge(data.name))
+        })
+    }
+    else {
+        loadMarkUpFromHash(window.location.hash.replace("#", ""));
+    }
+}
+
+window.addEventListener("hashchange", e => {
+    const currentHash = window.location.hash.replace("#", "");
+    var event = e.target.id
+    if(window.location.hash = '#solvechallenge') {
+        app.innerHTML=null;
+        challenegeName= event
+        solvechallenge(challenegeName).then(function(data){
+            app.insertAdjacentHTML('beforeend', markups.solvechallenge(data.name))
+        })
+    }
+    else {
+        loadMarkUpFromHash(currentHash);  
+    }
+})
+
+// app.addEventListener("click", e => {
+//     var event = e.target.id
+//     console.log(event)
+// })
 
 
 const registerForm = document.querySelector(".registerform");
@@ -384,7 +426,7 @@ if (loginForm) {
             .catch(function (err) {
                 console.log(err)
             })
-        console.log(response)
+        //console.log(response)
         if (localStorage.getItem('JWTToken')) {
             window.location.hash = "#dashboard";
         }
