@@ -148,7 +148,7 @@ const markups = {
 };
 
 const contest = async (pageno = 1) => {
-    return await fetch(`http://ccoder.herokuapp.com/dashboard/contests?page=${pageno}`).then(function (data) {
+    return await fetch(`http://ccoder.herokuapp.com/dashboard/contests/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlOTAxYTEwMDc1ZWUzMDAxN2U3NDA1YSIsImlhdCI6MTU4NjUwODMxMCwiZXhwIjoxNTg2NTk0NzEwfQ.EFbRpXAh0_Twi99sx3WSSGzjTmYm7EctIYZ2tY9TJiQ?page=${pageno}`).then(function (data) {
         return data.json()
     })
         .then(function (res) {
@@ -183,8 +183,9 @@ if (window.location.hash) {
             data = data.contests
             noOfpage = Math.ceil(length / 10)
             for (i = 0; i < data.length; i++) {
-                // console.log(Date(data[i].startTime))
-                if (Date(data[i].startTime.toString()) < Date()) {
+                console.log(new Date(data[i].startTime.toString().slice(0,19)))
+                if (new Date(data[i].startTime.toString().slice(0,19)).toString() < Date()){
+                    console.log()
                     continue
                 }
                 app.insertAdjacentHTML("beforeend", markups.contest(data[i].name, data[i].description, data[i].startTime))
@@ -216,8 +217,8 @@ window.addEventListener("hashchange", e => {
             data = data.contests
             noOfpage = Math.ceil(length / 10)
             for (i = 0; i < data.length; i++) {
-                // console.log(Date(data[i].startTime))
-                if (Date(data[i].startTime.toString()) < Date()) {
+                console.log(new Date(data[i].startTime.toString().slice(0,19)))
+                if (new Date(data[i].startTime.toString().slice(0,19)).toString() < Date()){
                     continue
                 }
                 app.insertAdjacentHTML("beforeend", markups.contest(data[i].name, data[i].description, data[i].startTime))
