@@ -132,13 +132,13 @@ const markups = {
 </div>
 </div>`,
 
-    contest: function (name, Description, starttime) {
-        return `<div class="card text-center contest" style="margin-top:2%;">
+    contest: function (name, Description, starttime,cond) {
+        return `<div class="card text-center" style="margin-top:2%;">
     <div class="card-body">
       <h5 class="card-title">${name}</h5>
       <p class="card-text">${Description}</p>
-      <a href="#" class="btn btn-warning">View Details</a>
-      <a href="#" class="btn btn-warning">Signup</a>
+      <a href="#viewcontest/${encodeURI(name)}" class="btn btn-warning viewcontest">View Details</a>
+      <a href="#${cond}/${encodeURI(name)}" class="btn btn-warning signed">${cond}</a>
     </div>
     <div class="card-footer text-muted">
         Start time:${starttime}
@@ -146,26 +146,183 @@ const markups = {
     </div>`
 },
 
-practice: function(name,maxScore) {
+Practice: function(name,maxScore) {
     return `<div class="card mt-3">
     <div class="card-body">
       <h5 class="card-title"><strong>${name}</strong></h5>
       <p class="card-text" style="float:left">MaxScore: ${maxScore}</p>
-      <a href="#solvechallenge" class="btn btn-warning" id="${name}" style= "margin-left:900px;margin-top:-120px" >Solve Challenge</a>
+      <a href="#solvechallenge/${encodeURI(name)}" class="btn btn-warning disab" style= "margin-left:900px;margin-top:-120px" >Solve Challenge</a>
     </div>
     </div>`
-    
 },
 
-solvechallenge: function(name) {
-    return `<h1>${name}</h1>`
+solvechallenge: function(name,question,constraints,input,output) {
+    return `<h1>${name}</h1>
+    <div class="card text-center">
+    <div class="card-header">
+      <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Problem</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#submissions/${encodeURI(name)}">Submissions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#leaderboard/${encodeURI(name)}">Leaderboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#discussions/${encodeURI(name)}">Discussions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#editorial/${encodeURI(name)}">Editorial</a>
+        </li>
+      </ul>
+    </div>
+    <p>${question}</p>
+    <p><strong>constraints</strong></p>
+    <p>${constraints}</p>
+    <p><strong>Sample input</strong></p>
+    <p>${input}</p>
+    <p><strong>Sample output</strong></p>
+    <p>${output}</p>
+  </div>`
+},
+
+Submissions: function(submissions,name) {
+    return `<h1>${name}</h1>
+    <div class="card text-center">
+    <div class="card-header">
+      <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/${encodeURI(name)}">Problem</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Submissions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#leaderboard/${encodeURI(name)}">Leaderboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#discussions/${encodeURI(name)}">Discussions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#editorial/${encodeURI(name)}">Editorial</a>
+        </li>
+      </ul>
+    </div>
+    <p>${submissions}</p>
+  </div>`
+
+},
+
+Discussions: function(discussions,name){
+    return `<h1>${name}</h1>
+    <div class="card text-center">
+    <div class="card-header">
+      <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/${encodeURI(name)}">Problem</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#submissions/${encodeURI(name)}">Submissions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#leaderboard/${encodeURI(name)}">Leaderboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Discussions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#editorial/${encodeURI(name)}">Editorial</a>
+        </li>
+      </ul>
+    </div>
+    <p>${discussions}</p>
+  </div>`
+
+},
+
+Editorial: function(editorial,name){
+    return `<h1>${name}</h1>
+    <div class="card text-center">
+    <div class="card-header">
+      <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/${encodeURI(name)}">Problem</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#submissions/${encodeURI(name)}">Submissions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#leaderboard/${encodeURI(name)}">Leaderboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#discussions/${encodeURI(name)}">Discussions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Editorial</a>
+        </li>
+      </ul>
+    </div>
+    <p>${editorial}</p>
+  </div>`
+},
+
+Leaderboard: function(data, name) {
+    return `<h1>${name}</h1>
+    <div class="card text-center">
+    <div class="card-header">
+      <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/${encodeURI(name)}">Problem</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#submissions/${encodeURI(name)}">Submissions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Leaderboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#discussions/${encodeURI(name)}">Discussions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#solvechallenge/#editorial/${encodeURI(name)}">Editorial</a>
+        </li>
+      </ul>
+    </div>
+    <p>${data}</p>
+  </div>`
+},
+
+
+viewcontest: function(contestname=1,description=1,rules=1,prize=1,organization=1,startTime=1){
+    return `<div class="jumbotron ">
+    <h1 class="display-4">${contestname}</h1>
+    <p class="lead">${description}</p>
+    <hr class="my-4">
+    <p>Rules:${rules}</p>
+    <p>Prize:${prize}</p>
+    <p>Organized By:${organization}</p>
+    <div class="jumbotron-footer text-muted">
+        Start time:${startTime}
+    </div>
+  </div>`
 }
 }
+
 
 var accessToken = localStorage.getItem('JWTToken')
+var id = localStorage.getItem('id')
+var username = localStorage.getItem('username')
+if(username){
+    a = document.querySelector('.username')
+    a.textContent=username
+    a.style.display='block'
+
+}
 
 const contest = async (pageno = 1) => {
-    return await fetch(`http://ccoder.herokuapp.com/dashboard/contests/?page=${pageno}`).then(function (data) {
+    return await fetch(`http://ccoder.herokuapp.com/dashboard/contests/${accessToken}?page=${pageno}`).then(function (data) {
         return data.json()
     })
         .then(function (res) {
@@ -177,7 +334,7 @@ const contest = async (pageno = 1) => {
         })
 };
 
-const practice = (pageno = 1) => {
+const practices = (pageno = 1) => {
     return fetch(`http://ccoder.herokuapp.com/dashboard/challenges/${accessToken}?page=${pageno}`).then(function(data){
         return data.json();
     })
@@ -189,20 +346,41 @@ const practice = (pageno = 1) => {
     })
 }
 
-const solvechallenge = (challengeName) => {
-    return fetch(`http://ccoder.herokuapp.com/dashboard/challenges/${challengeName}/${accessToken}`).then(function(data){
+const solvechallenges = (name) => {
+    return fetch(`http://ccoder.herokuapp.com/dashboard/challenges/${name}/${accessToken}`).then(function(data){
         return data.json()
     }).then(function(res){
-        return res
+        return res.Challenge
     })
     .catch(function(err){
         return err
     })
 }
 
+const leaderboard = (name) => {
+    return fetch(`http://ccoder.herokuapp.com/leaderboard/${name}/${accessToken}`).then(function(data){
+        return data.json()
+    }).then(function(res){
+        return res.sub
+    })
+    .catch(function(err){
+        return err
+    })
+}
+
+const ViewContest = async (name) => {
+    return await fetch(`http://ccoder.herokuapp.com/dashboard/contests/${name}/${accessToken}`).then(function (data) {
+        return data.json()
+    })
+        .then(function (res) {
+            return res.Contest
+        })
+        .catch(function (err) {
+            return err
+        })
+};
 
 const app = document.querySelector("#app");
-
 const loadMarkUpFromHash = hash => {
     app.innerHTML = null;
     app.insertAdjacentHTML("afterbegin", markups[hash]);
@@ -210,6 +388,11 @@ const loadMarkUpFromHash = hash => {
 
 
 if (window.location.hash) {
+    if(window.location.hash!='#login'||window.location.hash!='#register'){
+        if(!accessToken){
+            window.location.hash='#login'
+        }
+    }
     if (window.location.hash.includes('#contests')) {
         var pageno=window.location.href.slice(window.location.href.indexOf('#contests') + 9);
         if(!pageno){
@@ -221,11 +404,13 @@ if (window.location.hash) {
             data = data.contests
             noOfpage = Math.ceil(length / 10)
             for (i = 0; i < data.length; i++) {
-                // console.log(Date(data[i].startTime))
-                if (Date(data[i].startTime.toString()) < Date()) {
-                    continue
+                if(data[i].signups.includes(id)){
+                    var cond = 'enter'
                 }
-                app.insertAdjacentHTML("beforeend", markups.contest(data[i].name, data[i].description, data[i].startTime))
+                else{
+                    var cond = 'signup'
+                }
+                app.insertAdjacentHTML("beforeend", markups.contest(data[i].name, data[i].description, data[i].startTime,cond))
             }
             app.insertAdjacentHTML('beforeend', `<nav aria-label="Page navigation example" style="margin-top:2%;">
         <ul class="pagination justify-content-center addcontestpage">
@@ -237,57 +422,18 @@ if (window.location.hash) {
             }
         })
     }
-    else {
-        loadMarkUpFromHash(window.location.hash.replace("#", ""));
-    }
-}
-window.addEventListener("hashchange", e => {
-    const currentHash = window.location.hash.replace("#", "");
-    if (window.location.hash.includes('#contests')) {
-        var pageno=window.location.href.slice(window.location.href.indexOf('#contests') + 9);
-        if(!pageno){
-            pageno=1
-        }
-        app.innerHTML = null;
-        contest(pageno).then(function (data) {
-            length = data.totalContest
-            data = data.contests
-            noOfpage = Math.ceil(length / 10)
-            for (i = 0; i < data.length; i++) {
-                // console.log(Date(data[i].startTime))
-                if (Date(data[i].startTime.toString()) < Date()) {
-                    continue
-                }
-                app.insertAdjacentHTML("beforeend", markups.contest(data[i].name, data[i].description, data[i].startTime))
-            }
-            app.insertAdjacentHTML('beforeend', `<nav aria-label="Page navigation example" style="margin-top:2%;">
-        <ul class="pagination justify-content-center addcontestpage">
-        </ul>
-      </nav>`)
-            var page = document.querySelector('.addcontestpage')
-            for (i = 1; i <= noOfpage; i++) {
-                page.insertAdjacentHTML('beforeend', `<li class="page-item"><a class="page-link contestpage" href="#contests${i}">${i}</a></li>`)
-            }
-        })
-    }
-    else {
-        loadMarkUpFromHash(currentHash);
-    }
-});
-
-if (window.location.hash) {
     if(window.location.hash.includes('#practice')){
         var pageno=window.location.href.slice(window.location.href.indexOf('#practice') + 9);
         if(!pageno){
             pageno=1
         }
         app.innerHTML=null;
-        practice(pageno).then(function(data){
+        practices(pageno).then(function(data){
             length = 50
             data = data
             noOfpage = Math.ceil(length / 10)
             for(i=0;i<data.length;i++){
-                app.insertAdjacentHTML("beforeend",markups.practice(data[i].name,data[i].maxScore))
+                app.insertAdjacentHTML("beforeend",markups.Practice(data[i].name,data[i].maxScore))
             }
             app.insertAdjacentHTML('beforeend', `<nav aria-label="Page navigation example" style="margin-top:2%;">
             <ul class="pagination justify-content-center addchallengepage">
@@ -299,72 +445,251 @@ if (window.location.hash) {
             }
         })
       }
-      else{
+      if(window.location.hash.includes('#viewcontest')){
+
+        var name=window.location.hash.slice(window.location.hash.indexOf('#viewcontest') + 13);
+        app.innerHTML=null
+
+        ViewContest(name).then(function(data){
+            app.insertAdjacentHTML("beforeend",markups.viewcontest(data[0].name,data[0].description,data[0].rules,data[0].prize,data[0].organizationName,data[0].startTime))
+        })
+
+      }
+      if(window.location.hash.includes('#signup')){
+
+        var name=window.location.hash.slice(window.location.hash.indexOf('#singup') + 9);
+        console.log(name)
+        app.innerHTML=null
+
+        ViewContest(name).then(function(data){
+            app.insertAdjacentHTML("beforeend",markups.viewcontest(data[0].name,data[0].description,data[0].rules,data[0].prize,data[0].organizationName,data[0].startTime))
+            console.log(data[0].startTime)
+            for(i=0;i<data[0].challenges.length;i++){
+                app.insertAdjacentHTML("beforeend",markups.Practice(data[0].challenges[i].name,data[0].challenges[i].maxScore))
+            }
+            if(new Date(data[0].startTime.slice(0,19))>new Date()){
+                console.log('yes')
+                document.querySelector('.disab').classList.add("disabled")
+            }
+            else if(new Date(data[0].startTime.slice(0,19))<new Date()){
+                console.log('no')
+                document.querySelector('.disab').classList.remove("disabled")
+            }
+
+        })
+    }
+
+    if(window.location.hash.includes('#solvechallenge')){
+        var name = window.location.hash.slice(window.location.hash.indexOf('#solvechallenge')+16)
+        console.log(name)
+        app.innerHTML = null
+
+        solvechallenges(name).then(function(data){
+            app.insertAdjacentHTML("beforeend", markups.solvechallenge(data[0].name,data[0].question,data[0].constraints,data[0].input,data[0].output));
+        })
+
+    }
+
+    if(window.location.hash.includes('#solvechallenge/#submissions')){
+        var name = window.location.hash.slice(window.location.hash.indexOf('#solvechallenge/#submissions')+ 29)
+        console.log(name)
+        app.innerHTML = null
+
+        solvechallenges(name).then(function(data){
+            app.insertAdjacentHTML("beforeend", markups.Submissions(data[0].submissions, data[0].name))
+            console.log(data[0].name)
+        })
+    }
+
+    if(window.location.hash.includes('#solvechallenge/#discussions')){
+        var name = window.location.hash.slice(window.location.hash.indexOf('#solvechallenge/#discussions')+ 29)
+        console.log(name)
+        app.innerHTML = null
+
+        solvechallenges(name).then(function(data){
+            app.insertAdjacentHTML("beforeend", markups.Discussions(data[0].discussions, data[0].name))
+            console.log(data[0].name)
+        })
+    }
+
+    if(window.location.hash.includes('#solvechallenge/#editorial')){
+        var name = window.location.hash.slice(window.location.hash.indexOf('#solvechallenge/#editorial')+ 27)
+        console.log(name)
+        app.innerHTML = null
+
+        solvechallenges(name).then(function(data){
+            app.insertAdjacentHTML("beforeend", markups.Editorial(data[0].editorial, data[0].name))
+            console.log(data[0].name)
+        })
+    }
+
+    if(window.location.hash.includes('#solvechallenge/#leaderboard')){
+        var name = window.location.hash.slice(window.location.hash.indexOf('#solvechallenge/#leaderboard')+ 29)
+        console.log(name)
+        app.innerHTML = null
+
+        leaderboard(name).then(function(data){
+            app.insertAdjacentHTML("beforeend", markups.Leaderboard(data, decodeURI(name)))
+            console.log(data[0].name)
+        })
+    }
+
+    else {
         loadMarkUpFromHash(window.location.hash.replace("#", ""));
     }
+    
 }
-
 window.addEventListener("hashchange", e => {
-  const currentHash = window.location.hash.replace("#", "");
-  if(window.location.hash.includes('#practice')){
-    var pageno=window.location.href.slice(window.location.href.indexOf('#practice') + 9);
-    if(!pageno){
-        pageno=1
-    }
-    app.innerHTML=null;
-    practice(pageno).then(function(data){
-        length = 50
-        data = data
-        noOfpage = Math.ceil(length / 10)
-        for(i=0;i<data.length;i++){
-            app.insertAdjacentHTML("beforeend",markups.practice(data[i].name,data[i].maxScore))
+    if(window.location.hash!='#login'||window.location.hash!='#register'){
+        if(!accessToken){
+            window.location.hash='#login'
         }
-        app.insertAdjacentHTML('beforeend', `<nav aria-label="Page navigation example" style="margin-top:2%;">
-        <ul class="pagination justify-content-center addchallengepage">
+    }
+    const currentHash = window.location.hash.replace("#", "");
+
+    if (window.location.hash.includes('#contests')) {
+        var pageno=window.location.href.slice(window.location.href.indexOf('#contests') + 9);
+        if(!pageno){
+            pageno=1
+        }
+        app.innerHTML = null;
+        contest(pageno).then(function (data) {
+            length = data.totalContest
+            data = data.contests
+            noOfpage = Math.ceil(length / 10)
+            for (i = 0; i < data.length; i++) {
+                if(data[i].signups.includes(id)){
+                    var cond = 'enter'
+                }
+                else{
+                    var cond = 'signup'
+                }
+                app.insertAdjacentHTML("beforeend", markups.contest(data[i].name, data[i].description, data[i].startTime,cond))
+            }
+            app.insertAdjacentHTML('beforeend', `<nav aria-label="Page navigation example" style="margin-top:2%;">
+        <ul class="pagination justify-content-center addcontestpage">
         </ul>
       </nav>`)
-      var page = document.querySelector('.addchallengepage')
-        for (i = 1; i <= noOfpage; i++) {
-            page.insertAdjacentHTML('beforeend', `<li class="page-item"><a class="page-link contestpage" href="#practice${i}">${i}</a></li>`)
+            var page = document.querySelector('.addcontestpage')
+            for (i = 1; i <= noOfpage; i++) {
+                page.insertAdjacentHTML('beforeend', `<li class="page-item"><a class="page-link contestpage" href="#contests${i}">${i}</a></li>`)
+            }
+        })
+    }
+    if(window.location.hash.includes('#practice')){
+        var pageno=window.location.href.slice(window.location.href.indexOf('#practice') + 9);
+        if(!pageno){
+            pageno=1
         }
-    })
-  }
-  else{
-    loadMarkUpFromHash(currentHash);  
-  }
-});
-
-if(window.localStorage.hash) {
-    if(window.location.hash = '#solvechallenge') {
-        solvechallenge(challenegeName).then(function(data){
-            app.insertAdjacentHTML('beforeend', markups.solvechallenge(data.name))
-        })
-    }
-    else {
-        loadMarkUpFromHash(window.location.hash.replace("#", ""));
-    }
-}
-
-window.addEventListener("hashchange", e => {
-    const currentHash = window.location.hash.replace("#", "");
-    var event = e.target.id
-    if(window.location.hash = '#solvechallenge') {
         app.innerHTML=null;
-        challenegeName= event
-        solvechallenge(challenegeName).then(function(data){
-            app.insertAdjacentHTML('beforeend', markups.solvechallenge(data.name))
+        practices(pageno).then(function(data){
+            length = 50
+            data = data
+            noOfpage = Math.ceil(length / 10)
+            for(i=0;i<data.length;i++){
+                app.insertAdjacentHTML("beforeend",markups.Practice(data[i].name,data[i].maxScore))
+            }
+            app.insertAdjacentHTML('beforeend', `<nav aria-label="Page navigation example" style="margin-top:2%;">
+            <ul class="pagination justify-content-center addchallengepage">
+            </ul>
+          </nav>`)
+          var page = document.querySelector('.addchallengepage')
+            for (i = 1; i <= noOfpage; i++) {
+                page.insertAdjacentHTML('beforeend', `<li class="page-item"><a class="page-link contestpage" href="#practice${i}">${i}</a></li>`)
+            }
+        })
+      }
+      if(window.location.hash.includes('#viewcontest')){
+
+        var name=window.location.hash.slice(window.location.hash.indexOf('#viewcontest') + 13);
+        app.innerHTML=null
+
+        ViewContest(name).then(function(data){
+            app.insertAdjacentHTML("beforeend",markups.viewcontest(data[0].name,data[0].description,data[0].rules,data[0].prize,data[0].organizationName,data[0].startTime))
+        })
+
+      }
+      if(window.location.hash.includes('#signup')){
+
+        var name=window.location.hash.slice(window.location.hash.indexOf('#singup') + 9);
+        console.log(name)
+        app.innerHTML=null
+
+        ViewContest(name).then(function(data){
+            app.insertAdjacentHTML("beforeend",markups.viewcontest(data[0].name,data[0].description,data[0].rules,data[0].prize,data[0].organizationName,data[0].startTime))
+            console.log(data[0].startTime)
+            for(i=0;i<data[0].challenges.length;i++){
+                app.insertAdjacentHTML("beforeend",markups.Practice(data[0].challenges[i].name,data[0].challenges[i].maxScore))
+            }
+            if(new Date(data[0].startTime.slice(0,19))>new Date()){
+                console.log('yes')
+                document.querySelector('.disab').classList.add("disabled")
+            }
+            else if(new Date(data[0].startTime.slice(0,19))<new Date()){
+                console.log('no')
+                document.querySelector('.disab').classList.remove("disabled")
+            }
         })
     }
-    else {
-        loadMarkUpFromHash(currentHash);  
+
+    if(window.location.hash.includes('#solvechallenge')) {
+        var name = window.location.hash.slice(window.location.hash.indexOf('#solvechallenge')+16)
+        console.log(name)
+        app.innerHTML = null
+        solvechallenges(name).then(function(data){
+            app.insertAdjacentHTML("beforeend", markups.solvechallenge(data[0].name,data[0].question,data[0].constraints,data[0].input,data[0].output));
+        })
+
     }
-})
 
-// app.addEventListener("click", e => {
-//     var event = e.target.id
-//     console.log(event)
-// })
+    if(window.location.hash.includes('#solvechallenge/#submissions')){
+        var name = window.location.hash.slice(window.location.hash.indexOf('#solvechallenge/#submissions')+ 29)
+        console.log(name)
+        app.innerHTML = null
 
+        solvechallenges(name).then(function(data){
+            app.insertAdjacentHTML("beforeend", markups.Submissions(data[0].submissions, data[0].name))
+            console.log(data[0].name)
+        })
+    }
+
+    if(window.location.hash.includes('#solvechallenge/#discussions')){
+        var name = window.location.hash.slice(window.location.hash.indexOf('#solvechallenge/#discussions')+ 29)
+        console.log(name)
+        app.innerHTML = null
+
+        solvechallenges(name).then(function(data){
+            app.insertAdjacentHTML("beforeend", markups.Discussions(data[0].discussions, data[0].name))
+            console.log(data[0].name)
+        })
+    }
+
+    if(window.location.hash.includes('#solvechallenge/#editorial')){
+        var name = window.location.hash.slice(window.location.hash.indexOf('#solvechallenge/#editorial')+ 27)
+        console.log(name)
+        app.innerHTML = null
+
+        solvechallenges(name).then(function(data){
+            app.insertAdjacentHTML("beforeend", markups.Editorial(data[0].editorial, data[0].name))
+            console.log(data[0].name)
+        })
+    }
+
+    if(window.location.hash.includes('#solvechallenge/#leaderboard')){
+        var name = window.location.hash.slice(window.location.hash.indexOf('#solvechallenge/#leaderboard')+ 29)
+        console.log(name)
+        app.innerHTML = null
+
+        leaderboard(name).then(function(data){
+            app.insertAdjacentHTML("beforeend", markups.Leaderboard(data, decodeURI(name)))
+            console.log(data[0].name)
+        })
+    }
+
+    else {
+        loadMarkUpFromHash(currentHash);
+    }
+});
 
 const registerForm = document.querySelector(".registerform");
 const loginForm = document.querySelector(".loginform");
@@ -420,18 +745,25 @@ if (loginForm) {
                 return data.json()
             })
             .then(function(user){
-                localStorage.setItem('JWTToken', user.accessToken)
+                console.log(user)
+                
+                if(user.message!='Please verify your email first'){
+                    localStorage.setItem('JWTToken', user.accessToken)
+                    localStorage.setItem('id',user.loginUser._id)
+                    localStorage.setItem('username',user.loginUser.username)
+                }
+                return user
                 //console.log(localStorage.getItem('JWTToken'));
             })
             .catch(function (err) {
                 console.log(err)
             })
-        //console.log(response)
-        if (localStorage.getItem('JWTToken')) {
-            window.location.hash = "#dashboard";
-        }
-        else if (response.message == 'Please verify your email first') {
+
+        if (response.message == 'Please verify your email first') {
             alert('Please verify your email first')
+        }     
+        if(localStorage.getItem('JWTToken')) {
+            window.location.hash = "#dashboard";
         }
         else {
             alert('Invalid credantials')

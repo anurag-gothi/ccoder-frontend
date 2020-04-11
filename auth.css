@@ -23,7 +23,10 @@ font-family: 'Numans', sans-serif;
 height: 90%;
 align-content: center;
 }
-
+a.disabled {
+    pointer-events: none;
+    cursor: default;
+}
 .custom-card1{
 height: 390px;
 margin-top: auto;
