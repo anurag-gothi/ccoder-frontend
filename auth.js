@@ -6,8 +6,8 @@ const markups = {
       <div class="card-header">
           <h3>Login</h3>
           <div class="d-flex justify-content-end social_icon">
-              <span><i class="fab fa-github-square"></i></span>
-              <span><i class="fab fa-google-plus-square"></i></span>
+              <span><a href='https://ccoder.herokuapp.com/github'><i class="fab fa-github-square"></a></i></span>
+              <span><a href='https://ccoder.herokuapp.com/google'><i class="fab fa-google-plus-square"></i></a></span>
           </div>
       </div>
       <div class="card-body">
@@ -47,8 +47,8 @@ const markups = {
 			<div class="card-header">
 				<h3>Register</h3>
 				<div class="d-flex justify-content-end social_icon">
-					<span><i class="fab fa-github-square"></i></span>
-					<span><i class="fab fa-google-plus-square"></i></span>
+                <span><a href='https://ccoder.herokuapp.com/github'><i class="fab fa-github-square"></a></i></span>
+                <span><a href='https://ccoder.herokuapp.com/google'><i class="fab fa-google-plus-square"></i></a></span>
 				</div>
 			</div>
 			<div class="card-body">
@@ -149,7 +149,7 @@ Practice: function(name,maxScore) {
     </div>
     </div>`
 },
-solvechallenge: function(name,question,constraints,input,output) {
+solvechallenge: function(name,question,constraints,input,output,func_node) {
     return `<h1>${name}</h1>
     <div class="card text-center">
     <div class="card-header">
@@ -178,7 +178,15 @@ solvechallenge: function(name,question,constraints,input,output) {
     <p>${input}</p>
     <p><strong>Sample output</strong></p>
     <p>${output}</p>
-  </div>`
+  </div>
+  <form class='submit'>
+  <input type='text' name='name' value='${name}'>
+  <input type ='text' name='language' value='node'>
+  <textarea id="w3mission" name='code'rows="30" cols="100">${func_node}</textarea>
+  <input type='submit' value="submit" class="btn login_btn">
+  </form>
+  `
+
 },
 
 Submissions: function(submissions,name) {
@@ -341,7 +349,7 @@ updateprofiles: function(name,username,email,image='https://res.cloudinary.com/a
           </ul>
         </div>        
     <div class="custom-card3">
-            <form class='update'>
+            <form class='updateform'>
             <br>
             Email↓↓
             <input class="form-control" name="email" type="text" placeholder="email" value="${email}" readonly>
@@ -356,6 +364,7 @@ updateprofiles: function(name,username,email,image='https://res.cloudinary.com/a
             <br>
             <br>
             </form>
+            <input type="button" value="Upe" class="updates btn login_btn">
         </div>
         </div>
         `
@@ -413,7 +422,6 @@ const contest = async (pageno = 1) => {
         return data.json()
     })
         .then(function (res) {
-
             return res
         })
         .catch(function (err) {
@@ -464,8 +472,8 @@ const leaderboard = (name) => {
         return err
     })
 }
-const Profile = async()=>{
-    return await fetch(`http://ccoder.herokuapp.com/user/me/${accessToken}`).then(function(data){
+const Profile = async ()=>{
+    return  await fetch(`http://ccoder.herokuapp.com/user/me/${accessToken}`).then(function(data){
         return data.json()
     })
     .then(function(res){
@@ -606,6 +614,7 @@ if (window.location.hash) {
     if(window.location.hash=='#profile'){
         app.innerHTML=null
         Profile().then(function(data){
+            console.log(data)
             app.insertAdjacentHTML("beforeend",markups.profiles(data.name,data.username,data.email))
         })
     }
@@ -625,7 +634,8 @@ if (window.location.hash) {
         app.innerHTML = null
 
         solvechallenges(name).then(function(data){
-            app.insertAdjacentHTML("beforeend", markups.solvechallenge(data[0].name,data[0].question,data[0].constraints,data[0].input,data[0].output));
+            console.log(data[0].func_node)
+            app.insertAdjacentHTML("beforeend", markups.solvechallenge(data[0].name,data[0].question,data[0].constraints,data[0].input,data[0].output,data[0].func_node));
         })
 
     }
@@ -799,6 +809,7 @@ window.addEventListener("hashchange", e => {
         console.log(name)
         app.innerHTML = null
         solvechallenges(name).then(function(data){
+            console.log(data)
             app.insertAdjacentHTML("beforeend", markups.solvechallenge(data[0].name,data[0].question,data[0].constraints,data[0].input,data[0].output));
         })
 
@@ -852,7 +863,7 @@ window.addEventListener("hashchange", e => {
     if(window.location.hash=='#updateprofile'){
         app.innerHTML=null
         Profile().then(function(data){
-            app.insertAdjacentHTML("beforeend",markups.updateprofiles(data.name,data.username,data.email))
+        app.insertAdjacentHTML("beforeend",markups.updateprofiles(data.name,data.username,data.email))
         })
     }
     if(window.location.hash=='#changepassword'){
@@ -867,9 +878,9 @@ window.addEventListener("hashchange", e => {
 
 const registerForm = document.querySelector(".registerform");
 const loginForm = document.querySelector(".loginform");
-const update = document.querySelector('.update')
+const updateForm = $('.updates')
 const changePassword = document.querySelector(".changepassword");
-
+const submitt = $('.submit')
 
 if (registerForm) {
     registerForm.addEventListener("submit", async e => {
@@ -950,18 +961,20 @@ if (loginForm) {
     });
 }
 
-if(update){
-    console.log('working1')
-    update.addEventListener("submit", async e => {
-        e.preventDefault();
+var changepassword = $('.changepassword')
+if(changepassword){
+    console.log(changepassword)
+    $('.changepassword').on('submit',async function(e) {
+        e.preventDefault()
         console.log('working')
-        const { name, username, email, password } = e.target;
+        const { oldpassword,newpassword,confirmpassword} = e.target;
         const send = {
-            name: name.value,
-            username: username.value,
-            email: email.value
+            oldpassword: oldpassword.value,
+            newpassword: newpassword.value,
+            confirmpassword:confirmpassword.value
             }
-        let response = await fetch(`http://ccoder.herokuapp.com/user/userprofile/${accessToken}`,
+        console.log(username.value,name.value)
+        let response = await fetch(`http://ccoder.herokuapp.com/user/changepassword/${accessToken}`,
             {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json;charset=utf-8' },
@@ -985,3 +998,48 @@ if(update){
         // }
     });
 }
+
+if (submitt) {
+    console.log('here')
+    $('.submit').on("submit", async e => {
+        e.preventDefault();
+        console.log('working')
+        const { language, code ,name} = e.target;
+        const send = {
+            language: language.value,
+            code: code.value,
+        }
+        let response = await fetch(`http://ccoder.herokuapp.com/submit/${name.value}/${accessToken}`,
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json;charset=utf-8' },
+                body: JSON.stringify(send)
+            })
+            .then(function (data) {
+                return data.json()
+            })
+
+            .catch(function (err) {
+                console.log(err)
+            })
+        console.log(response)
+        // if (response.createUser) {
+        //     alert('Registered Successfully, You will recieve email to verify Your Account and login again')
+        //     window.location.hash = "#login";
+        // }
+        // else {
+        //     alert('Validation error')
+        // }
+    });
+}
+$('.logout').on('click',async function(e){
+    e.preventDefault()
+    var response =  await fetch(`http://ccoder.herokuapp.com//user/logout/${accessToken}`,
+    {
+        method: 'DELETE',
+    })
+    .then(function(data){
+        return data.json
+    })
+    console.log(response)
+})
