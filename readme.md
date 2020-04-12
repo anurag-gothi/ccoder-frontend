@@ -9,12 +9,14 @@ Deployed URL: https://ccoder.herokuapp.com
 - [Table Of Content](#table-of-content)
 - [About Our Project:](#about-our-project)
 - [Features :](#features)
-    - [\* Authentication](#authentication)
+    - [**Authentication**](#authentication)
     - [**What A User Can Achieve From Our API**](#what-a-user-can-achieve-from-our-api)
-      - [\* Basic Usages](#basic-usages)
-      - [\* Challenge Creation](#challenge-creation)
-      - [\* Contest Creation](#contest-creation)
+      - [Basic Usages](#basic-usages)
+      - [Challenge Creation](#challenge-creation)
+      - [Contest Creation](#contest-creation)
+- [**Aggregations** :](#aggregations)
 - [Technologies used:](#technologies-used)
+- [Future Goals :](#future-goals)
 
 # About Our Project:
 
@@ -26,7 +28,7 @@ CCoder is a place built for anyone to practice and perfect their programming ski
     
 # Features :
 
-### \* Authentication
+### **Authentication**
 
 ---
 1.  User Registration
@@ -41,14 +43,13 @@ CCoder is a place built for anyone to practice and perfect their programming ski
 
 ### **What A User Can Achieve From Our API**
 
-#### \* Basic Usages
+####  Basic Usages
 
 ---
 1.  Can Register/Login With us.
       > POST https://ccoder.herokuapp.com/user/register
       > POST https://ccoder.herokuapp.com/user/login
 
-3.
 2.  Can Update his/her user detail,profile picture and password.
       > PATCH https://ccoder.herokuapp.com/user/userprofile/:token
           
@@ -78,7 +79,7 @@ CCoder is a place built for anyone to practice and perfect their programming ski
      > GET https://ccoder.herokuapp.com/leaderboard/:challenge/:token
 
      
-#### \* Challenge Creation
+####  Challenge Creation
 
 ---
 1.  Can Create His Own Challenge
@@ -97,28 +98,36 @@ CCoder is a place built for anyone to practice and perfect their programming ski
 
      > DELETE https://ccoder.herokuapp.com/testcase/delete/:challenge/:testCaseID/:token 
 
-#### \* Contest Creation
+####  Contest Creation
 
 ---
 1.  Can Create A contest and set start and end time.
+      > POST https://ccoder.herokuapp.com/contest/new/:token
+
 2.  Can Add Other User aswell as Moderator for a challenge
+      > POST https://ccoder.herokuapp.com//contest/:contest/addmoderator/:username/:token
+
 3.  Can Use Our Pre Curated Challenges or even can use the challenges made by him.
+      > POST https://ccoder.herokuapp.com//contest/:contest/addchallenge/:challenge/:token
+
 4.  All other User can Signup in a contest
+      > POST https://ccoder.herokuapp.com//contest/:contest/signup/:token
+
 5.  Only Signup user can Submit the code for a challenge
+      > POST https://ccoder.herokuapp.com/submit/:challenge/:token
+
 6.  Can Update Details of A contest
+      > PATCH /contest/:contest/update/:token
+
 7.  Can Remove The moderator
-8.  
+      > DELETE https://ccoder.herokuapp.com//contest/:contest/deletemoderator/:username/:token
 
 
-
-
-
-
-9. **Aggregations** :
-   - a. Sorting (as per Most Recent COntest).
-   - b. Searching (_On the basis of keyword and location_) .
-   - c. Pagination (_10 Jobs per page_).
-
+# **Aggregations** :
+   - a. Contest Count.
+   - b. Sorting (as per Most Recent Contest).
+   - d. Searching (_On the basis of challenge and contest name_) .
+   - e. Pagination (_10 Challenge And contest per page_).
 
 # Technologies used:
 
@@ -130,5 +139,10 @@ CCoder is a place built for anyone to practice and perfect their programming ski
 - Json Web token (_For Authentication_)
 - Bcrypt Js (_For Hashing_)
 - Mongoose (_To Connect to NoSQL Database_)
-- Mark Down (_To Make our read me file look better_)
+- Compile-run (_To compile the code_)
+- Express-validator (_To validate the Data user is Sending_)
+- Passport (_For third Party user authentication_)
+- JEST & SuperTest (_For Unit Testing_)
+- mongodb-memory-server (_For Storing Data in Memory Database while testing_)
 
+# Future Goals :

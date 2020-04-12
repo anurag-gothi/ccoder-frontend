@@ -1,0 +1,84 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    </head>
+    <body>
+        <h1>CCoder</h1>
+
+<p>Project done by <em>ANURAG</em> and <em>TEJA</em></p>
+
+<p>Deployed URL: https://ccoder.herokuapp.com</p>
+
+<h1>Table Of Content</h1>
+
+<ul><li><a href="#ccoder">CCoder</a></li><li><a href="#table-of-content">Table Of Content</a></li><li><a href="#about-our-project">About Our Project:</a></li><li><a href="#features">Features :</a><ul><li><a href="#authentication"><strong>Authentication</strong></a></li><li><a href="#what-a-user-can-achieve-from-our-api"><strong>What A User Can Achieve From Our API</strong></a><ul><li><a href="#basic-usages">Basic Usages</a></li><li><a href="#challenge-creation">Challenge Creation</a></li><li><a href="#contest-creation">Contest Creation</a></li></ul></li></ul></li><li><a href="#aggregations"><strong>Aggregations</strong> :</a></li><li><a href="#technologies-used">Technologies used:</a></li><li><a href="#future-goals">Future Goals :</a></li></ul>
+
+<h1>About Our Project:</h1>
+
+<h1>Features :</h1>
+
+<h3><strong>Authentication</strong></h3>
+
+<hr/>
+
+<ol><li>User Registration
+a)  Local
+b)  Github OAuth
+c)  Google OAuth</li><li>Email Verification for Registration.</li><li>Password Reset. (Via Email Verification)</li><li>Change Password.</li><li>Restricitng User to use Weak Password With Express Validator</li><li>Unique Username</li></ol>
+
+<h3><strong>What A User Can Achieve From Our API</strong></h3>
+
+<h4>Basic Usages</h4>
+
+<hr/>
+
+<ol><li><p>Can Register/Login With us.
+  &gt; POST https://ccoder.herokuapp.com/user/register
+  &gt; POST https://ccoder.herokuapp.com/user/login</p></li><li><p>Can Update his/her user detail,profile picture and password.
+  &gt; PATCH https://ccoder.herokuapp.com/user/userprofile/:token</p></li><li><p>Can participate in Pre Currated Challenges Which Came Along With the API.</p><p>  (FOR ALL CHALLENGE)
+  &gt; GET https://ccoder.herokuapp.com/dashboard/challenges/:token</p><p>  (FOR SPECIFIC CHALLENGE)
+  &gt; GET https://ccoder.herokuapp.com/dashboard/challenges/:challengename/:token</p></li><li><p>Can Code In Multiple Languages (Node,Python,Java,C,C++)
+  &gt; POST https://ccoder.herokuapp.com/submit/:challenge/:token</p></li><li><p>Can Bookmark A Challenge
+ (Add)
+ &gt; POST https://ccoder.herokuapp.com/:challenge/bookmark/add/:token</p><p> (Delete)
+  &gt; DELETE https://ccoder.herokuapp.com/:challenge/bookmark/delete/:token</p></li><li><p>Can Use Discussion Board of a Challenge.
+ &gt; POST https://ccoder.herokuapp.com/:challenge/discussion/:token</p></li><li><p>Can see the Leaderboard of a Challenge.
+ &gt; GET https://ccoder.herokuapp.com/leaderboard/:challenge/:token</p></li></ol>
+
+<h4>Challenge Creation</h4>
+
+<hr/>
+
+<ol><li><p>Can Create His Own Challenge
+ &gt; POST https://ccoder.herokuapp.com/user/challenge/:token</p></li><li><p>Can Add dynamic Test Cases For the challenge.
+  &gt; POST https://ccoder.herokuapp.com/testcase/:challenge/:token</p></li><li><p>Can update/delete Challenges Made By Him.
+ &gt; PATCH https://ccoder.herokuapp.com/:challenge/update/:token</p><p> &gt; DELETE https://ccoder.herokuapp.com/:challenge/delete/:token</p></li><li><p>Can Update/delete A testcase He Implemented in a Challenge.
+ &gt; PATCH https://ccoder.herokuapp.com/testcase/update/:challenge/:testCaseID/:token</p><p> &gt; DELETE https://ccoder.herokuapp.com/testcase/delete/:challenge/:testCaseID/:token </p></li></ol>
+
+<h4>Contest Creation</h4>
+
+<hr/>
+
+<ol><li><p>Can Create A contest and set start and end time.
+  &gt; POST https://ccoder.herokuapp.com/contest/new/:token</p></li><li><p>Can Add Other User aswell as Moderator for a challenge
+  &gt; POST https://ccoder.herokuapp.com//contest/:contest/addmoderator/:username/:token</p></li><li><p>Can Use Our Pre Curated Challenges or even can use the challenges made by him.
+  &gt; POST https://ccoder.herokuapp.com//contest/:contest/addchallenge/:challenge/:token</p></li><li><p>All other User can Signup in a contest
+  &gt; POST https://ccoder.herokuapp.com//contest/:contest/signup/:token</p></li><li><p>Only Signup user can Submit the code for a challenge
+  &gt; POST https://ccoder.herokuapp.com/submit/:challenge/:token</p></li><li><p>Can Update Details of A contest
+  &gt; PATCH /contest/:contest/update/:token</p></li><li><p>Can Remove The moderator
+  &gt; DELETE https://ccoder.herokuapp.com//contest/:contest/deletemoderator/:username/:token</p></li></ol>
+
+<h1><strong>Aggregations</strong> :</h1>
+
+<ul><li>a. Contest Count.</li><li>b. Sorting (as per Most Recent Contest).</li><li>d. Searching (<em>On the basis of challenge and contest name</em>) .</li><li>e. Pagination (<em>10 Challenge And contest per page</em>).</li></ul>
+
+<h1>Technologies used:</h1>
+
+<hr/>
+
+<ul><li>Nodemailer (<em>To send system generated emails</em>)</li><li>Multer + Cloudinary (<em>Converting System Image into URL</em>)</li><li>Express Js (<em>Framework for node Js</em>)</li><li>Json Web token (<em>For Authentication</em>)</li><li>Bcrypt Js (<em>For Hashing</em>)</li><li>Mongoose (<em>To Connect to NoSQL Database</em>)</li><li>Compile-run (<em>To compile the code</em>)</li><li>Express-validator (<em>To validate the Data user is Sending</em>)</li><li>Passport (<em>For third Party user authentication</em>)</li><li>JEST &amp; SuperTest (<em>For Unit Testing</em>)</li><li>mongodb-memory-server (<em>For Storing Data in Memory Database while testing</em>)</li></ul>
+
+<h1>Future Goals :</h1>
+    </body>
+</html>
