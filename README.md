@@ -66,11 +66,10 @@ CCoder is a place built for anyone to practice and perfect their programming ski
       > POST https://ccoder.herokuapp.com/submit/:challenge/:token
       
 5.  Can Bookmark A Challenge
-     (Add)
+
      > POST https://ccoder.herokuapp.com/:challenge/bookmark/add/:token
      
-     (Delete)
-      > DELETE https://ccoder.herokuapp.com/:challenge/bookmark/delete/:token
+     > DELETE https://ccoder.herokuapp.com/:challenge/bookmark/delete/:token
       
 6.  Can Use Discussion Board of a Challenge.
      > POST https://ccoder.herokuapp.com/:challenge/discussion/:token
@@ -146,3 +145,4 @@ CCoder is a place built for anyone to practice and perfect their programming ski
 - mongodb-memory-server (_For Storing Data in Memory Database while testing_)
 
 # Future Goals :
+
