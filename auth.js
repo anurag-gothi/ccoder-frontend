@@ -492,11 +492,11 @@ const loadMarkUpFromHash = hash => {
 
 
 if (window.location.hash) {
-    if(window.location.hash!='#login'||window.location.hash!='#register'){
-        if(!accessToken){
-            window.location.hash='#login'
-        }
-    }
+    // if(window.location.hash!='#login'||window.location.hash!='#register'){
+    //     if(!accessToken){
+    //         window.location.hash='#login'
+    //     }
+    // }
     if (window.location.hash.includes('#contests')) {
         var pageno=window.location.href.slice(window.location.href.indexOf('#contests') + 9);
         if(!pageno){
@@ -685,11 +685,11 @@ if (window.location.hash) {
     
 }
 window.addEventListener("hashchange", e => {
-    if(window.location.hash!='#login'||window.location.hash!='#register'){
-        if(!accessToken){
-            window.location.hash='#login'
-        }
-    }
+    // if(window.location.hash!='#login'||window.location.hash!='#register'){
+    //     if(!accessToken){
+    //         window.location.hash='#login'
+    //     }
+    // }
     const currentHash = window.location.hash.replace("#", "");
 
     if (window.location.hash.includes('#contests')) {
@@ -973,7 +973,6 @@ if(changepassword){
             newpassword: newpassword.value,
             confirmpassword:confirmpassword.value
             }
-        console.log(username.value,name.value)
         let response = await fetch(`http://ccoder.herokuapp.com/user/changepassword/${accessToken}`,
             {
                 method: 'PATCH',
@@ -989,6 +988,7 @@ if(changepassword){
             })
 
         console.log(response)
+
         // if (response.createUser) {
         //     alert('Registered Successfully, You will recieve email to verify Your Account and login again')
         //     window.location.hash = "#login";
@@ -1034,12 +1034,16 @@ if (submitt) {
 }
 $('.logout').on('click',async function(e){
     e.preventDefault()
-    var response =  await fetch(`http://ccoder.herokuapp.com//user/logout/${accessToken}`,
+    var response =  await fetch(`http://ccoder.herokuapp.com/user/logout/${accessToken}`,
     {
         method: 'DELETE',
     })
     .then(function(data){
+        localStorage.setItem('JWTToken', null)
+        localStorage.setItem('id',null)
+        localStorage.setItem('username',null)
         return data.json
     })
+    windows.location.hash='#'
     console.log(response)
 })

@@ -1,4 +1,6 @@
-# CCoder
+var markdown = require( "markdown" ).markdown;
+
+console.log( markdown.toHTML(`# CCoder
 
 Project done by _ANURAG_ and _TEJA_
 
@@ -48,7 +50,9 @@ Are you a code newbie?
 ---
 1.  Can Register/Login With us.
       > POST https://ccoder.herokuapp.com/user/register
+
       > POST https://ccoder.herokuapp.com/user/login
+      
       > DELETE https://ccoder.herokuapp.com/user/logout/:token
 
 2.  Can Update his/her user detail,profile picture and password.
@@ -158,4 +162,4 @@ Are you a code newbie?
       2. Will help them improve Their Skills With Handpicked Challenges Tested to improve the the skills
 - **More Language Support**
 
-
+`));

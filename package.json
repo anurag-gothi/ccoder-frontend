@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.html",
   "dependencies": {
+    "markdown": "^0.5.0",
     "parcel": "^1.12.4",
     "parcel-bundler": "^1.12.4"
   },
@@ -23,6 +24,6 @@
   },
   "browserslist": [
     "last 1 Chrome versions"
-],
+  ],
   "homepage": "https://github.com/anurag-gothi-au6/ccoder-frontend#readme"
 }
