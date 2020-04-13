@@ -20,11 +20,11 @@ Deployed URL: https://ccoder.herokuapp.com
 
 # About Our Project:
 
-`Are you a code newbie?` 
+Are you a code newbie?
 
-`Learning to program is exhilarating and challenging... and also frustrating, exhausting, and overwhelming.
-CCoder provides countless small wins. The exercises are achievable mini-quests: small and well-defined, and with enough complexity to uncover bite-sized knowledge gaps.
-CCoder is a place built for anyone to practice and perfect their programming skills. Challenges are added almost every day so you can work on applying your skills`
+      Learning to program is exhilarating and challenging... and also frustrating, exhausting, and overwhelming.
+      CCoder provides countless small wins. The exercises are achievable mini-quests: small and well-defined, and with enough complexity to uncover bite-sized knowledge gaps.
+      CCoder is a place built for anyone to practice and perfect their programming skills. Challenges are added almost every day so you can work on applying your skills
     
 # Features :
 
@@ -49,9 +49,13 @@ CCoder is a place built for anyone to practice and perfect their programming ski
 1.  Can Register/Login With us.
       > POST https://ccoder.herokuapp.com/user/register
       > POST https://ccoder.herokuapp.com/user/login
+      > DELETE https://ccoder.herokuapp.com/user/logout/:token
 
 2.  Can Update his/her user detail,profile picture and password.
       > PATCH https://ccoder.herokuapp.com/user/userprofile/:token
+
+      (profile Picture Upload)
+      >POST https://ccoder.herokuapp.com/user/userimageupload/:token
           
 3.  Can participate in Pre Currated Challenges Which Came Along With the API.
    
@@ -145,4 +149,11 @@ CCoder is a place built for anyone to practice and perfect their programming ski
 - mongodb-memory-server (_For Storing Data in Memory Database while testing_)
 
 # Future Goals :
+
+---
+
+- **User Can Subscribe To Our Pro Model**
+  - Benefits Of Being A Pro User
+      1. Will Get Updates About New Challenge And New Contest Handpicked By our team.
+      2. Will help them improve Their Skills With Handpicked Challenges Tested to improve the the skills
 
